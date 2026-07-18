@@ -1,0 +1,120 @@
+{
+  "examples": [
+    {
+      "request": {
+        "url": "http://localhost:5000/riskradar/auth/register",
+        "method":"POST",
+        "body": {
+          "full_name": "User one",
+          "email": "userone@gmail.com",
+          "password": "User1@one"
+        }
+      },
+      "response": {
+        "success": true,
+        "statusCode": 201,
+        "message": "Registration successful.",
+        "data": {
+          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+          "user": {
+            "id": "44afdea9-950e-4dcd-8565-4988e78ed02f",
+            "full_name": "User one",
+            "email": "userone@gmail.com",
+            "role": "USER",
+            "email_verified": false,
+            "is_active": true,
+            "last_login": null,
+            "created_at": "2026-07-17T16:00:51.654Z",
+            "updated_at": "2026-07-17T16:00:51.654Z"
+          }
+        }
+      }
+    },
+
+    {
+    "request": {
+      "url": "http://localhost:5000/riskradar/auth/login",
+      "method": "POST",
+      "body": {
+        "email": "userone@gmail.com",
+        "password": "User1@one"
+      }
+    },
+    "frontend_instructions": {
+      "onSuccess": [
+        "Save accessToken in memory (recommended) or local state.",
+        "Do NOT store the refresh token. It is stored automatically as an HttpOnly cookie by the browser.",
+        "Redirect the user to the dashboard."
+      ],
+      "onFailure": [
+        "Display the error message returned by the API."
+      ]
+    }
+  },
+  {
+    "request": {
+      "url": "http://localhost:5000/riskradar/auth/refresh-token",
+      "method": "POST",
+      "body": {}
+    },
+    "frontend_instructions": {
+      "whenToCall": [
+        "Call this API automatically whenever any protected API returns HTTP 401.",
+        "The browser automatically sends the HttpOnly refresh token cookie.",
+        "Do not send an Authorization header."
+      ],
+      "onSuccess": [
+        "Replace the old accessToken with the new one.",
+        "Retry the original failed request."
+      ],
+      "onFailure": [
+        "Clear the stored accessToken.",
+        "Redirect the user to the login page."
+      ]
+    }
+  },
+  {
+    "request": {
+      "url": "http://localhost:5000/riskradar/auth/logout",
+      "method": "POST",
+      "headers": {
+        "Authorization": "Bearer <accessToken>"
+      }
+    },
+    "frontend_instructions": {
+      "whenToCall": [
+        "Call when the user clicks the Logout button."
+      ],
+      "onSuccess": [
+        "Remove the accessToken from memory.",
+        "The backend clears the refresh token cookie automatically.",
+        "Redirect the user to the login page."
+      ]
+    }
+  },
+  {
+    "request": {
+      "url": "http://localhost:5000/riskradar/auth/logout-all",
+      "method": "POST",
+      "headers": {
+        "Authorization": "Bearer <accessToken>"
+      }
+    },
+    "frontend_instructions": {
+      "whenToCall": [
+        "Call when the user selects 'Logout from all devices'."
+      ],
+      "onSuccess": [
+        "Remove the accessToken from memory.",
+        "The backend deletes every refresh token for this user.",
+        "The backend clears the current refresh token cookie.",
+        "Redirect the user to the login page."
+      ],
+      "notes": [
+        "All other logged-in devices will be signed out automatically when their current access token expires and they try to refresh it."
+      ]
+    }
+  }
+   
+  ]
+}
