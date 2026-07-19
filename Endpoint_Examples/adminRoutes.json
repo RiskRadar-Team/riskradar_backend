@@ -1,0 +1,21 @@
+{
+  "examples":[
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/admin/create",
+        "method":"POST",
+        "body": {
+          "full_name": "Admin",
+          "email": "admin@gmail.com",
+          "password": "admin1@risk"
+        }
+      },
+      "response":{
+        "message":"As we get response while creating a user"
+      },
+      "notes":{
+        "note":"An admin can only create an admin so first create user with role admin on DB"        
+      }
+    }
+  ]
+}
