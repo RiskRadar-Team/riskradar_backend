@@ -30,9 +30,11 @@ app.use(cookieParser());
 // Routes
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 app.use("/riskradar/auth", authRoutes);
 app.use("/riskradar/user", userRoutes);
+app.use("/riskradar/admin", adminRoutes);
 //end of routes
 
 app.use(errorHandler);

@@ -2,3 +2,5 @@
 schema.sql
 node_modules/
 pending.js
+fetchAPI.js
+scripts/

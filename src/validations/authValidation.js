@@ -48,3 +48,21 @@ export const changePasswordValidation = [
     .withMessage("Current password is required."),
   passwordValidator,
 ];
+
+export const adminDetailsValidation = [
+  body("full_name")
+    .trim()
+    .notEmpty()
+    .withMessage("Full name required")
+    .isLength({ min: 3, max: 100 })
+    .withMessage("Full name must be between 3 and 100 characters."),
+
+  body("email")
+    .trim()
+    .notEmpty()
+    .withMessage("Email is required.")
+    .isEmail()
+    .withMessage("Please provide a valid email.")
+    .normalizeEmail(),
+  passwordValidator,
+];

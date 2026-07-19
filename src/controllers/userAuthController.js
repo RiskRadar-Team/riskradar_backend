@@ -16,7 +16,7 @@ class UserAuthController {
   });
   /**login user controller */
   static login = catchAsync(async (request, response) => {
-    console.log(request.body);
+    // console.log(request.body);
     const data = await AuthService.login(request.body);
 
     createTokenCookie(response, data.refreshToken);
