@@ -1,0 +1,262 @@
+{
+  "examples":[
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/domain/",
+        "method":"POST",
+        "credentials":"include",
+        "headers": {
+        "Authorization": "Bearer <accessToken>"
+        },
+        "body":{
+          "domain_name":"google.pay.abc",
+          "list_type":"BLACKLIST",
+          "threat_type": "Phising",
+          "reason": "This web site duplicate google pay to steal your details",
+          "confidence_score":90,
+          "source":""
+        }
+      },
+      "response":{
+        "success": true,
+        "statusCode": 201,
+        "message": "Domain created successfully",
+        "data": {
+          "id": "b6229530-f915-4bc6-a63c-17cb0f84827f",
+          "domain_name": "google.pay.abc",
+          "list_type": "BLACKLIST",
+          "threat_type": "Phising",
+          "reason": "This web site duplicate google pay to steal your details",
+          "source": null,
+          "confidence_score": 90,
+          "is_active": true,
+          "created_by": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+          "updated_by": null,
+          "created_at": "2026-07-21T12:33:22.882Z",
+          "updated_at": "2026-07-21T12:33:22.882Z"
+      }
+    },
+    "Note":"domain_name and list_type are required fields"
+      
+    },
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/domain/e3cc09a1-a161-4576-9b30-43e4f7178bfe",
+        "method":"PUT",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{
+          "domain_name":"google.com",
+          "list_type":"WHITELIST ",
+          "threat_type": "",
+          "reason": "",
+          "confidence_score":95,
+          "source":"Google updated"
+        }
+      },
+      "response":{
+        "success": true,
+        "statusCode": 200,
+        "message": "Domain updated successfully",
+        "data": {
+            "id": "e3cc09a1-a161-4576-9b30-43e4f7178bfe",
+            "domain_name": "google.com",
+            "list_type": "WHITELIST",
+            "threat_type": "",
+            "reason": "",
+            "source": "Google updated",
+            "confidence_score": 95,
+            "is_active": true,
+            "created_by": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+            "updated_by": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+            "created_at": "2026-07-21T12:41:32.012Z",
+            "updated_at": "2026-07-21T12:44:04.424Z"
+        }
+      }
+    },
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/domain/all",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{}
+      },
+      "response":{
+        "success": true,
+        "statusCode": 200,
+        "message": "List of all the domains",
+        "data":[{"message for frontend":"Here all the domains will shown with detail"}]
+      }
+    },
+    {
+      "url to get single domain":"http://localhost:5000/riskradar/domain/id"
+    },
+    {
+      "request":{
+        "urls":[
+          {
+            "url":"http://localhost:5000/riskradar/domain/",
+            "message": "This will fetch first page"
+          },
+          {
+            "url":"http://localhost:5000/riskradar/domain?search=google",
+            "message": "This will fetch domains accroding to search key word"
+          },
+          {
+            "url":"http://localhost:5000/riskradar/domain?list_type=WHITELIST",
+            "message": "This will fetch domains accroding to list_type key word"
+          },
+          {
+            "url":"http://localhost:5000/riskradar/domain?is_active=true",
+            "message": "This will fetch domains accroding to is_active key word"
+          },
+          {
+            "url":"http://localhost:5000/riskradar/domain?page=1&limit=20&search=google&list_type=WHITELIST&is_active=true",
+            "message": "This will fetch domains accroding to the query"
+          }
+        ],
+        "method":"GET",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        }
+      },
+      "response":{
+        "success": true,
+        "statusCode": 200,
+        "message": "Domains fetched successfully.",
+        "data": {
+            "domains": [
+                {
+                    "id": "968c1a6f-ab39-4f4b-b214-d192d5754d28",
+                    "domain_name": "paypal.pay.abc",
+                    "list_type": "BLACKLIST",
+                    "threat_type": "Phising attack",
+                    "reason": "This web site duplicate paypal to steal your details",
+                    "source": "google",
+                    "confidence_score": 90,
+                    "is_active": true,
+                    "created_by": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                    "updated_by": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                    "created_at": "2026-07-21T13:37:57.917Z",
+                    "updated_at": "2026-07-21T13:39:48.890Z"
+                },
+                {
+                    "id": "e3cc09a1-a161-4576-9b30-43e4f7178bfe",
+                    "domain_name": "google.com",
+                    "list_type": "WHITELIST",
+                    "threat_type": "",
+                    "reason": "",
+                    "source": "Google updated",
+                    "confidence_score": 95,
+                    "is_active": true,
+                    "created_by": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                    "updated_by": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                    "created_at": "2026-07-21T12:41:32.012Z",
+                    "updated_at": "2026-07-21T12:44:04.424Z"
+                },
+                {
+                    "id": "b6229530-f915-4bc6-a63c-17cb0f84827f",
+                    "domain_name": "google.pay.abc",
+                    "list_type": "BLACKLIST",
+                    "threat_type": "Phising",
+                    "reason": "This web site duplicate google pay to steal your details",
+                    "source": null,
+                    "confidence_score": 90,
+                    "is_active": true,
+                    "created_by": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                    "updated_by": null,
+                    "created_at": "2026-07-21T12:33:22.882Z",
+                    "updated_at": "2026-07-21T12:33:22.882Z"
+                },
+                {
+                    "id": "4df8b533-bcb2-4dfd-a3fb-d7e24e2fc4d7",
+                    "domain_name": "somedomain.com",
+                    "list_type": "BLACKLIST",
+                    "threat_type": null,
+                    "reason": null,
+                    "source": null,
+                    "confidence_score": null,
+                    "is_active": true,
+                    "created_by": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                    "updated_by": null,
+                    "created_at": "2026-07-21T12:26:06.258Z",
+                    "updated_at": "2026-07-21T12:26:06.258Z"
+                }
+            ],
+            "pagination": {
+                "page": 1,
+                "limit": 10,
+                "totalItems": 4,
+                "totalPages": 1
+            }
+        }
+      }
+    },
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/domain/e3cc09a1-a161-4576-9b30-43e4f7178bfe/status",
+        "credentials":"include",
+        "method":"PATCH",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{
+          "is_active":false
+        }
+      },
+      "response":{
+        "success": true,
+        "statusCode": 200,
+        "message": "Domain status updated successfully",
+        "data": {
+            "id": "e3cc09a1-a161-4576-9b30-43e4f7178bfe",
+            "domain_name": "google.com",
+            "list_type": "WHITELIST",
+            "threat_type": "",
+            "reason": "",
+            "source": "Google updated",
+            "confidence_score": 95,
+            "is_active": false,
+            "created_by": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+            "updated_by": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+            "created_at": "2026-07-21T12:41:32.012Z",
+            "updated_at": "2026-07-21T14:11:14.415Z"
+        }
+      }
+    },{
+      "request":{
+        "url":"http://localhost:5000/riskradar/domain/e3cc09a1-a161-4576-9b30-43e4f7178bfe",
+        "method":"DELETE",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{}
+      },
+      "response":{
+        "success": true,
+        "statusCode": 200,
+        "message": "Domain deleted successfully",
+        "data": {
+            "id": "e3cc09a1-a161-4576-9b30-43e4f7178bfe",
+            "domain_name": "google.com",
+            "list_type": "WHITELIST",
+            "threat_type": "",
+            "reason": "",
+            "source": "Google updated",
+            "confidence_score": 95,
+            "is_active": false,
+            "created_by": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+            "updated_by": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+            "created_at": "2026-07-21T12:41:32.012Z",
+            "updated_at": "2026-07-21T14:11:14.415Z"
+        }
+      }
+    }
+  ]
+}
