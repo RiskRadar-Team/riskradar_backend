@@ -32,11 +32,13 @@ import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import domainRoutes from "./routes/domainRoutes.js";
+import urlRoutes from "./routes/urlRoutes.js";
 
 app.use("/riskradar/auth", authRoutes);
 app.use("/riskradar/user", userRoutes);
 app.use("/riskradar/admin", adminRoutes);
 app.use("/riskradar/domain", domainRoutes);
+app.use("/riskradar/url", urlRoutes);
 //end of routes
 
 app.use(errorHandler);

@@ -70,5 +70,40 @@ export async function initialiseDatabaseTable() {
       CREATE INDEX IF NOT EXISTS idx_domains_active
       ON domains(is_active);
   `);
+  await dbPool.query(`
+    CREATE TABLE IF NOT EXISTS urls(
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      url TEXT NOT NULL UNIQUE,
+      domain_id UUID
+        REFERENCES domains(id)
+        ON DELETE SET NULL,
+      list_type VARCHAR(20)
+        NOT NULL
+        CHECK (list_type IN ('BLACKLIST', 'WHITELIST')),
+      threat_type VARCHAR(100),
+      reason TEXT,
+      source VARCHAR(100),
+      confidence_score SMALLINT
+        CHECK (confidence_score BETWEEN 0 AND 100),
+      is_active BOOLEAN NOT NULL DEFAULT TRUE,
+      created_by UUID
+        REFERENCES users(id)
+        ON DELETE SET NULL,
+      updated_by UUID
+        REFERENCES users(id)
+        ON DELETE SET NULL,
+      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+      CREATE INDEX IF NOT EXISTS idx_urls_domain
+      ON urls(domain_id);
+      CREATE INDEX IF NOT EXISTS idx_urls_list_type
+      ON urls(list_type);
+      CREATE INDEX IF NOT EXISTS idx_urls_active
+      ON urls(is_active);
+      CREATE INDEX IF NOT EXISTS idx_urls_created_at
+      ON urls(created_at);
+  `);
+
   console.log("Database tables initialized successfully");
 }

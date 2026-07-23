@@ -1,0 +1,141 @@
+{
+  "examples":[
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/url/",
+        "method":"POST",
+        "credentials":"include",
+        "headers": {
+        "Authorization": "Bearer <accessToken>"
+        },
+        "body":{
+          "url":"http://paypal.pay.abc/password",
+          "list_type":"BLACKLIST",
+          "threat_type": "Phishing",
+          "reason": "This url has the potential to steal your details",
+          "confidence_score":90,
+          "source":""
+        }
+      },
+      "response":{
+        "success": true,
+        "statusCode": 201,
+        "message": "Domain created successfully",
+        "data": {
+          "id": "702573b2-4bf5-4914-b9a8-ea4e2f1dd5bd",
+          "url": "http://paypal.pay.abc/password",
+          "domain_id": "968c1a6f-ab39-4f4b-b214-d192d5754d28",
+          "list_type": "BLACKLIST",
+          "threat_type": "Phising",
+          "reason": "This url has the potential to steal your details",
+          "source": "google",
+          "confidence_score": 90,
+          "is_active": true,
+          "created_by": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+          "updated_by": null,
+          "created_at": "2026-07-23T16:58:27.071Z",
+          "updated_at": "2026-07-23T16:58:27.071Z"
+      }
+    },
+    "Note":"url and list_type are required fields and only a existing domain can have an url"
+      
+    },
+    {
+      "message for frontend":"All the responses for URLs is similar to domains so from here no response will be shown."
+    },
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/url/<id>",
+        "method":"PUT",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{
+          "url":"http://somedomain.com/password",
+          "list_type":"BLACKLIST",
+          "threat_type": "Phishing",
+          "reason": "This url has the potential to steal your details",
+          "confidence_score":96,
+          "source":"google updated"
+        }
+      }
+     
+    },
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/url/all",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{}
+      }
+     
+    },
+    {
+      "url to get single domain":"http://localhost:5000/riskradar/url/id"
+    },
+    {
+      "request":{
+        "urls":[
+          {
+            "url":"http://localhost:5000/riskradar/url/",
+            "message": "This will fetch first page"
+          },
+          {
+            "url":"http://localhost:5000/riskradar/url?search=google",
+            "message": "This will fetch urls accroding to search key word"
+          },
+          {
+            "url":"http://localhost:5000/riskradar/url?list_type=WHITELIST",
+            "message": "This will fetch urls accroding to list_type key word"
+          },
+          {
+            "url":"http://localhost:5000/riskradar/url?is_active=true",
+            "message": "This will fetch urls accroding to is_active key word"
+          },
+          {
+            "url":"http://localhost:5000/riskradar/url?domain_id=<id>",
+            "message": "This will fetch urls accroding to domain_id"
+          },
+          {
+            "url":"http://localhost:5000/riskradar/url?page=1&limit=20&search=google&list_type=WHITELIST&is_active=true",
+            "message": "This will fetch urls accroding to the query"
+          }
+        ],
+        "method":"GET",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        }
+      }
+     
+    },
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/url/<id>/status",
+        "credentials":"include",
+        "method":"PATCH",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{
+          "is_active":false
+        }
+      }
+      
+    },{
+      "request":{
+        "url":"http://localhost:5000/riskradar/url/<id>",
+        "method":"DELETE",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{}
+      }
+     
+    }
+  ]
+}
