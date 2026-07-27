@@ -33,12 +33,14 @@ import userRoutes from "./routes/userRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import domainRoutes from "./routes/domainRoutes.js";
 import urlRoutes from "./routes/urlRoutes.js";
+import phishingKeywordRoutes from "./routes/phishingKeywordRoutes.js";
 
 app.use("/riskradar/auth", authRoutes);
 app.use("/riskradar/user", userRoutes);
 app.use("/riskradar/admin", adminRoutes);
 app.use("/riskradar/domain", domainRoutes);
 app.use("/riskradar/url", urlRoutes);
+app.use("/riskradar/keyword", phishingKeywordRoutes);
 //end of routes
 
 app.use(errorHandler);

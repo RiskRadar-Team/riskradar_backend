@@ -104,6 +104,76 @@ export async function initialiseDatabaseTable() {
       CREATE INDEX IF NOT EXISTS idx_urls_created_at
       ON urls(created_at);
   `);
+  await dbPool.query(`
+    CREATE TABLE IF NOT EXISTS phishing_keywords(
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      keyword VARCHAR(255) NOT NULL UNIQUE,
+      category VARCHAR(50)
+        NOT NULL
+        CHECK (
+            category IN (
+                'BANKING',
+                'PAYMENT',
+                'SOCIAL',
+                'EMAIL',
+                'CRYPTO',
+                'SHOPPING',
+                'GOVERNMENT',
+                'TECH',
+                'MALWARE',
+                'OTHER'
+            )
+        ),
+      severity SMALLINT
+        NOT NULL
+        DEFAULT 3
+        CHECK (severity BETWEEN 1 AND 5),
+      match_type VARCHAR(20)
+        NOT NULL
+        DEFAULT 'CONTAINS'
+        CHECK (
+            match_type IN (
+                'EXACT',
+                'CONTAINS',
+                'REGEX'
+            )
+        ),
+    score SMALLINT
+        NOT NULL
+        DEFAULT 10
+        CHECK (score BETWEEN 0 AND 100),
+    description TEXT,
+    example TEXT,
+    is_case_sensitive BOOLEAN
+        NOT NULL
+        DEFAULT FALSE,
+    is_active BOOLEAN
+        NOT NULL
+        DEFAULT TRUE,
+    created_by UUID
+        REFERENCES users(id)
+        ON DELETE SET NULL,
+    updated_by UUID
+        REFERENCES users(id)
+        ON DELETE SET NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE INDEX IF NOT EXISTS idx_keywords_keyword
+    ON phishing_keywords(keyword);
+
+    CREATE INDEX IF NOT EXISTS idx_keywords_category
+    ON phishing_keywords(category);
+
+    CREATE INDEX IF NOT EXISTS idx_keywords_severity
+    ON phishing_keywords(severity);
+
+    CREATE INDEX IF NOT EXISTS idx_keywords_active
+    ON phishing_keywords(is_active);
+
+    CREATE INDEX IF NOT EXISTS idx_keywords_match_type
+    ON phishing_keywords(match_type);
+  `);
 
   console.log("Database tables initialized successfully");
 }

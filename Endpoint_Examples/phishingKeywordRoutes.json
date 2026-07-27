@@ -1,0 +1,135 @@
+{
+  "examples":[
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/keyword/",
+        "method":"POST",
+        "credentials":"include",
+        "headers": {
+        "Authorization": "Bearer <accessToken>"
+        },
+        "body":{
+          "keyword": "Tax refund --",
+          "category": "GOVERNMENT",
+          "severity": 4,
+          "match_type": "CONTAINS",
+          "score": 80,
+          "description": "Phishing emails often impersonate government agencies promising tax refunds to lure victims.",
+          "example": "You are eligible for a tax refund. Click here to claim your payment.",
+          "is_case_sensitive": false
+        }
+      },
+      "response":{
+        "success": true,
+        "statusCode": 201,
+        "message": "Domain created successfully",
+        "data": "Data is displayed as other create request"
+    },
+    "Note":"keyword,category and severity are required fields "
+      
+    },
+    {
+      "message for frontend":"All the responses for phishing keyword is similar to domains so from here no response will be shown."
+    },
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/keyword/<id>",
+        "method":"PUT",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{
+          "keyword": "Tax refund updated",
+          "category": "GOVERNMENT",
+          "severity": 4,
+          "match_type": "CONTAINS",
+          "score": 80,
+          "description": "Phishing emails often impersonate government agencies promising tax refunds to lure victims.",
+          "example": "You are eligible for a tax refund. Click here to claim your payment.",
+          "is_case_sensitive": false
+        }
+      }
+     
+    },
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/keyword/all",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{}
+      }
+     
+    },
+    {
+      "url to get single domain":"http://localhost:5000/riskradar/keyword/id"
+    },
+    {
+      "request":{
+        "urls":[
+          {
+            "url":"http://localhost:5000/riskradar/keyword/",
+            "message": "This will fetch first page"
+          },
+          {
+            "url":"http://localhost:5000/riskradar/keyword?search=tax",
+            "message": "This will fetch urls accroding to search key word"
+          },
+          {
+            "url":"http://localhost:5000/riskradar/keyword?category=GOVERNMENT",
+            "message": "This will fetch urls accroding to list_type key word"
+          },
+          {
+            "url":"http://localhost:5000/riskradar/keyword?is_active=true",
+            "message": "This will fetch urls accroding to is_active key word"
+          },
+          {
+            "url":"http://localhost:5000/riskradar/keyword?severity=4",
+            "message": "This will fetch urls accroding to severity"
+          },
+          {
+            "url":"http://localhost:5000/riskradar/keyword?match_type=CONTAINS",
+            "message": "This will fetch urls accroding to match_type"
+          },
+          {
+            "url":"http://localhost:5000/riskradar/keyword?page=1&limit=20&search=tax&category=GOVERNMENT&is_active=false&severity=4&match_type=CONTAINS",
+            "message": "This will fetch urls accroding to the query"
+          }
+        ],
+        "method":"GET",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        }
+      }
+     
+    },
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/url/<id>/status",
+        "credentials":"include",
+        "method":"PATCH",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{
+          "is_active":false
+        }
+      }
+      
+    },{
+      "request":{
+        "url":"http://localhost:5000/riskradar/url/<id>",
+        "method":"DELETE",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{}
+      }
+     
+    }
+  ]
+}
