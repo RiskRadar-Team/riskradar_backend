@@ -11,7 +11,7 @@
         "body":{
           "domain_name":"google.pay.abc",
           "list_type":"BLACKLIST",
-          "threat_type": "Phising",
+          "threat_type": "9b741c89-e3b8-4d05-b61a-3c416f59395c",
           "reason": "This web site duplicate google pay to steal your details",
           "confidence_score":90,
           "source":""
@@ -22,20 +22,20 @@
         "statusCode": 201,
         "message": "Domain created successfully",
         "data": {
-          "id": "b6229530-f915-4bc6-a63c-17cb0f84827f",
-          "domain_name": "google.pay.abc",
-          "list_type": "BLACKLIST",
-          "threat_type": "Phising",
-          "reason": "This web site duplicate google pay to steal your details",
-          "source": null,
-          "confidence_score": 90,
-          "is_active": true,
-          "created_by": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
-          "updated_by": null,
-          "created_at": "2026-07-21T12:33:22.882Z",
-          "updated_at": "2026-07-21T12:33:22.882Z"
-      }
-    },
+            "id": "3f1fecd2-442f-48c6-ab26-a27412c33dc1",
+            "domain_name": "google.pay.abc",
+            "list_type": "BLACKLIST",
+            "threat_type_id": "9b741c89-e3b8-4d05-b61a-3c416f59395c",
+            "reason": "This web site duplicate google pay to steal your details",
+            "source": "google",
+            "confidence_score": 90,
+            "is_active": true,
+            "created_by": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+            "updated_by": null,
+            "created_at": "2026-07-28T15:26:53.437Z",
+            "updated_at": "2026-07-28T15:26:53.437Z"
+        }
+      },
     "Note":"domain_name and list_type are required fields"
       
     },

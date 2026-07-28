@@ -26,7 +26,7 @@ class DomainService {
     const domain = await DomainModel.create({
       domain_name: normalisedDomain,
       list_type,
-      threat_type,
+      threat_type_id: threat_type,
       reason,
       source,
       confidence_score,
@@ -94,7 +94,7 @@ class DomainService {
     const updatedDomain = await DomainModel.update(id, {
       domain_name: normalisedDomain ?? existingDomain.domain_name,
       list_type: list_type ?? existingDomain.list_type,
-      threat_type: threat_type ?? existingDomain.threat_type,
+      threat_type_id: threat_type ?? existingDomain.threat_type_id,
       reason: reason ?? existingDomain.reason,
       source: source ?? existingDomain.source,
       confidence_score: confidence_score ?? existingDomain.confidence_score,

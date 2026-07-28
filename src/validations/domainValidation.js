@@ -20,9 +20,8 @@ export const domianDetailsValidation = [
 
   body("threat_type")
     .optional()
-    .trim()
-    .isLength({ max: 100 })
-    .withMessage("Threat type cannot exceed 100 characters"),
+    .isUUID()
+    .withMessage("Please provide a valid threat type"),
 
   body("reason")
     .optional()

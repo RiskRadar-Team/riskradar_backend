@@ -5,7 +5,7 @@ class DomainModel {
   static async create({
     domain_name,
     list_type,
-    threat_type,
+    threat_type_id,
     reason,
     source,
     confidence_score,
@@ -15,13 +15,13 @@ class DomainModel {
       // console.log("from model", domain_name);
       // console.log("from model", list_type);
       const query = `
-        INSERT INTO domains (domain_name,list_type,threat_type,reason,source,confidence_score,created_by)
+        INSERT INTO domains (domain_name,list_type,threat_type_id,reason,source,confidence_score,created_by)
         VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *;
       `;
       const values = [
         domain_name,
         list_type,
-        threat_type,
+        threat_type_id,
         reason,
         source,
         confidence_score,
@@ -61,8 +61,15 @@ class DomainModel {
   /** get all the domain  */
   static async getAll() {
     try {
+      // const query = `
+      //   SELECT * FROM domains ORDER BY created_at DESC;
+      // `;
       const query = `
-        SELECT * FROM domains ORDER BY created_at DESC;
+        SELECT domains.*, threat_types.code AS threat_type, threat_types.display_name AS threat_name
+        FROM domains
+        LEFT JOIN threat_types
+        ON domains.threat_type_id = threat_types.id
+        ORDER BY created_at DESC;
       `;
       const { rows } = await dbPool.query(query);
       // console.log(rows);
@@ -77,7 +84,7 @@ class DomainModel {
     {
       domain_name,
       list_type,
-      threat_type,
+      threat_type_id,
       reason,
       source,
       confidence_score,
@@ -86,14 +93,14 @@ class DomainModel {
   ) {
     try {
       const query = `
-        UPDATE domains SET domain_name = $1,list_type = $2, threat_type = $3,
+        UPDATE domains SET domain_name = $1,list_type = $2, threat_type_id = $3,
         reason = $4, source = $5, confidence_score = $6, updated_by = $7,
         updated_at = CURRENT_TIMESTAMP WHERE id =  $8 RETURNING *;
       `;
       const values = [
         domain_name,
         list_type,
-        threat_type,
+        threat_type_id,
         reason,
         source,
         confidence_score,
@@ -148,15 +155,15 @@ class DomainModel {
     const values = [];
     let index = 1;
     if (search) {
-      conditions.push(`domain_name ILIKE $${index++}`);
+      conditions.push(`domains.domain_name ILIKE $${index++}`);
       values.push(`%${search}%`);
     }
     if (list_type) {
-      conditions.push(`list_type = $${index++}`);
+      conditions.push(`domains.list_type = $${index++}`);
       values.push(list_type);
     }
     if (typeof is_active === "boolean") {
-      conditions.push(`is_active =  $${index++}`);
+      conditions.push(`domains.is_active =  $${index++}`);
       values.push(is_active);
     }
     const whereClause = conditions.length
@@ -186,11 +193,21 @@ class DomainModel {
     const safeSortOrder = allowedSortOrders.includes(sort_order.toUpperCase())
       ? sort_order.toUpperCase()
       : "DESC";
+    // const query = `
+    //   SELECT * FROM domains ${whereClause}
+    //   ORDER BY ${safeSortBy} ${safeSortOrder}
+    //   LIMIT $${index++} OFFSET $${index};
+    // `;
     const query = `
-      SELECT * FROM domains ${whereClause}
-      ORDER BY ${safeSortBy} ${safeSortOrder}
-      LIMIT $${index++} OFFSET $${index};
-    `;
+    SELECT domains.*, threat_types.code AS threat_type, threat_types.display_name AS threat_name
+    FROM domains
+    LEFT JOIN threat_types
+      ON domains.threat_type_id = threat_types.id
+    ${whereClause}
+    ORDER BY ${safeSortBy} ${safeSortOrder}
+    LIMIT $${index++} OFFSET $${index};
+  `;
+
     const { rows } = await dbPool.query(query, values);
     return {
       domains: rows,
