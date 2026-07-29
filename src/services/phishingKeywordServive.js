@@ -27,7 +27,7 @@ class PhishingKeywordService {
     }
     const newKeyword = await PhishingKeywordModel.create({
       keyword: normalisedKeyword,
-      category,
+      category_id: category,
       severity,
       match_type,
       score,
@@ -80,7 +80,7 @@ class PhishingKeywordService {
     }
     const updatedKeyword = await PhishingKeywordModel.update(id, {
       keyword: normalisedKeyword,
-      category: category ?? existingKeyword.category,
+      category_id: category ?? existingKeyword.category_id,
       serverity: severity ?? existingKeyword.serverity,
       match_type: match_type ?? existingKeyword.match_type,
       score: score ?? existingKeyword.score,

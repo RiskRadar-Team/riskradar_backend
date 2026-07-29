@@ -4,7 +4,7 @@ class PhishingKeywordModel {
   /** create keyword */
   static async create({
     keyword,
-    category,
+    category_id,
     severity,
     match_type,
     score,
@@ -15,14 +15,14 @@ class PhishingKeywordModel {
   }) {
     try {
       const query = `
-      INSERT INTO phishing_keywords (keyword,category,severity,
+      INSERT INTO phishing_keywords (keyword,category_id,severity,
       match_type,score,description,example,is_case_sensitive,created_by)
       VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)
       RETURNING *;
     `;
       const values = [
         keyword,
-        category,
+        category_id,
         severity,
         match_type,
         score,
@@ -41,8 +41,12 @@ class PhishingKeywordModel {
   static async findById(id) {
     try {
       const query = `
-        SELECT * FROM phishing_keywords
-        WHERE id  = $1 LIMIT 1;
+        SELECT phishing_keywords.*,keyword_categories.code AS category,
+        keyword_categories.display_name AS category_name
+        FROM phishing_keywords
+        LEFT JOIN keyword_categories
+        ON phishing_keywords.category_id = keyword_categories.id
+        WHERE phishing_keywords.id  = $1 LIMIT 1;
       `;
       const { rows } = await dbPool.query(query, [id]);
       return rows[0] || null;
@@ -68,7 +72,12 @@ class PhishingKeywordModel {
   static async getAllKeywords() {
     try {
       const query = `
-        SELECT * FROM phishing_keywords ORDER BY created_at DESC;
+        SELECT phishing_keywords.*,keyword_categories.code AS category,
+        keyword_categories.display_name AS category_name
+        FROM phishing_keywords
+        LEFT JOIN keyword_categories
+        ON phishing_keywords.category_id = keyword_categories.id
+        ORDER BY created_at DESC;
       `;
       const { rows } = await dbPool.query(query);
       return rows || [];
@@ -81,7 +90,7 @@ class PhishingKeywordModel {
     id,
     {
       keyword,
-      category,
+      category_id,
       serverity,
       match_type,
       score,
@@ -94,7 +103,7 @@ class PhishingKeywordModel {
     try {
       const query = `
       UPDATE phishing_keywords SET
-      keyword = $1, category = $2, severity = $3,
+      keyword = $1, category_id = $2, severity = $3,
       match_type = $4, score = $5, description = $6,
       example = $7, is_case_sensitive = $8,
       updated_by = $9, updated_at = CURRENT_TIMESTAMP
@@ -102,7 +111,7 @@ class PhishingKeywordModel {
     `;
       const values = [
         keyword,
-        category,
+        category_id,
         serverity,
         match_type,
         score,
@@ -165,39 +174,47 @@ class PhishingKeywordModel {
       const values = [];
       let index = 1;
       if (search) {
-        conditions.push(`keyword ILIKE $${index++}`);
+        conditions.push(`phishing_keywords.keyword ILIKE $${index++}`);
         values.push(`%${search}%`);
       }
       if (category) {
-        conditions.push(`category = $${index++}`);
+        conditions.push(`keyword_categories.code = $${index++}`);
         values.push(category);
       }
       if (severity) {
-        conditions.push(`severity = $${index++}`);
+        conditions.push(`phishing_keywords.severity = $${index++}`);
         values.push(severity);
       }
       if (match_type) {
-        conditions.push(`match_type = $${index++}`);
+        conditions.push(`phishing_keywords.match_type = $${index++}`);
         values.push(match_type);
       }
       if (typeof is_active === "boolean") {
-        conditions.push(`is_active = $${index++}`);
+        conditions.push(`phishing_keywords.is_active = $${index++}`);
         values.push(is_active);
       }
       const whereClause = conditions.length
         ? `WHERE ${conditions.join(" AND ")}`
         : "";
+      //   const countQuery = `
+      //   SELECT COUNT(*) AS total FROM phishing_keywords
+      //   ${whereClause};
+      // `;
       const countQuery = `
-      SELECT COUNT(*) AS total FROM phishing_keywords
+      SELECT COUNT(*) AS total
+      FROM phishing_keywords
+      LEFT JOIN keyword_categories
+        ON phishing_keywords.category_id = keyword_categories.id
       ${whereClause};
     `;
+
       const {
         rows: [{ total }],
       } = await dbPool.query(countQuery, values);
 
       const allowedSortColumns = [
         "keyword",
-        "category",
+        "category_id",
         "severity",
         "score",
         "created_at",
@@ -210,7 +227,12 @@ class PhishingKeywordModel {
       values.push(limit);
       values.push(offset);
       const query = `
-        SELECT * FROM phishing_keywords ${whereClause}
+        SELECT phishing_keywords.*,keyword_categories.code AS category,
+        keyword_categories.display_name AS category_name
+        FROM phishing_keywords
+        LEFT JOIN keyword_categories
+        ON phishing_keywords.category_id = keyword_categories.id
+        ${whereClause}
         ORDER BY ${safeSortBy} ${safeSortOrder}
         LIMIT $${index++} OFFSET $${index};
       `;

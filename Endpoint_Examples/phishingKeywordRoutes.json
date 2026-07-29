@@ -9,8 +9,8 @@
         "Authorization": "Bearer <accessToken>"
         },
         "body":{
-          "keyword": "Tax refund --",
-          "category": "GOVERNMENT",
+          "keyword": "Tax refund",
+          "category": "82953427-61b4-470a-8ab4-03c1b3aa552b",
           "severity": 4,
           "match_type": "CONTAINS",
           "score": 80,
@@ -22,7 +22,7 @@
       "response":{
         "success": true,
         "statusCode": 201,
-        "message": "Domain created successfully",
+        "message": "Keyword created successfully",
         "data": "Data is displayed as other create request"
     },
     "Note":"keyword,category and severity are required fields "
@@ -41,7 +41,7 @@
         },
         "body":{
           "keyword": "Tax refund updated",
-          "category": "GOVERNMENT",
+          "category": "82953427-61b4-470a-8ab4-03c1b3aa552b",
           "severity": 4,
           "match_type": "CONTAINS",
           "score": 80,

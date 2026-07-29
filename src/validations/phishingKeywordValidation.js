@@ -1,5 +1,4 @@
 import { body, param } from "express-validator";
-import { KEYWORD_CATEGORIES } from "../constants/Constants.js";
 import { MATCH_TYPES } from "../constants/Constants.js";
 
 /**Create keyword validation */
@@ -14,7 +13,7 @@ export const keywordValidation = [
     .trim()
     .notEmpty()
     .withMessage("Category is required.")
-    .isIn(KEYWORD_CATEGORIES)
+    .isUUID()
     .withMessage("Invalid keyword category."),
   body("severity")
     .notEmpty()
