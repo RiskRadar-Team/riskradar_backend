@@ -37,7 +37,11 @@ class DomainModel {
   static async findById(id) {
     try {
       const query = `
-        SELECT * FROM domains WHERE id = $1 LIMIT 1;
+        SELECT domains.*,threat_types.code AS threat_type, threat_types.display_name AS threat_name
+        FROM domains
+        LEFT JOIN threat_types
+        ON domains.threat_type_id = threat_types.id
+        WHERE domains.id = $1 LIMIT 1;
       `;
       const { rows } = await dbPool.query(query, [id]);
       return rows[0] || null;

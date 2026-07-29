@@ -6,7 +6,7 @@ class UrlModel {
     url,
     domain_id,
     list_type,
-    threat_type,
+    threat_type_id,
     reason,
     source,
     confidence_score,
@@ -14,7 +14,7 @@ class UrlModel {
   }) {
     try {
       const query = `
-        INSERT INTO urls (url,domain_id,list_type,threat_type,reason,source,
+        INSERT INTO urls (url,domain_id,list_type,threat_type_id,reason,source,
         confidence_score,created_by
         ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *;
       `;
@@ -22,7 +22,7 @@ class UrlModel {
         url,
         domain_id,
         list_type,
-        threat_type,
+        threat_type_id,
         reason,
         source,
         confidence_score,
@@ -38,9 +38,13 @@ class UrlModel {
   static async findById(id) {
     try {
       const query = `
-        SELECT urls.*,domains.domain_name FROM urls
+        SELECT urls.*,domains.domain_name,
+        threat_types.code AS threat_type, threat_types.display_name AS threat_name
+        FROM urls
         LEFT JOIN domains 
         ON  urls.domain_id =  domains.id
+        LEFT JOIN threat_types
+        ON urls.threat_type_id = threat_types.id
         WHERE urls.id = $1 
         LIMIT 1;
       `;
@@ -71,7 +75,7 @@ class UrlModel {
       url,
       domain_id,
       list_type,
-      threat_type,
+      threat_type_id,
       reason,
       source,
       confidence_score,
@@ -81,7 +85,7 @@ class UrlModel {
     try {
       const query = `
         UPDATE urls SET url = $1, domain_id = $2, list_type = $3,
-        threat_type = $4, reason = $5, source = $6, 
+        threat_type_id = $4, reason = $5, source = $6, 
         confidence_score = $7, updated_by = $8,
         updated_at =  CURRENT_TIMESTAMP
         WHERE id = $9 RETURNING *;
@@ -90,7 +94,7 @@ class UrlModel {
         url,
         domain_id,
         list_type,
-        threat_type,
+        threat_type_id,
         reason,
         source,
         confidence_score,
@@ -136,9 +140,13 @@ class UrlModel {
   static async getAllUrls() {
     try {
       const query = `
-        SELECT urls.*,domains.domain_name FROM urls
+        SELECT urls.*,domains.domain_name,
+        threat_types.code AS threat_type, threat_types.display_name AS threat_name
+        FROM urls
         LEFT JOIN domains 
         ON  urls.domain_id =  domains.id
+        LEFT JOIN threat_types
+        ON urls.threat_type_id = threat_types.id
         ORDER BY urls.created_at DESC;
       `;
       const { rows } = await dbPool.query(query);
@@ -205,9 +213,13 @@ class UrlModel {
       values.push(offset);
 
       const query = `
-      SELECT urls.*,domains.domain_name FROM urls 
+      SELECT urls.*,domains.domain_name,
+      threat_types.code AS threat_type, threat_types.display_name AS threat_name
+      FROM urls 
       LEFT JOIN domains 
       ON urls.domain_id =  domains.id
+      LEFT JOIN threat_types
+      ON urls.threat_type_id = threat_types.id
       ${whereClause}
       ORDER BY urls.${safeSortBy} ${safeSortOrder}
       LIMIT $${index++}

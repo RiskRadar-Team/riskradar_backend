@@ -11,7 +11,7 @@
         "body":{
           "url":"http://paypal.pay.abc/password",
           "list_type":"BLACKLIST",
-          "threat_type": "Phishing",
+          "threat_type": "9b741c89-e3b8-4d05-b61a-3c416f59395c",
           "reason": "This url has the potential to steal your details",
           "confidence_score":90,
           "source":""
@@ -20,13 +20,13 @@
       "response":{
         "success": true,
         "statusCode": 201,
-        "message": "Domain created successfully",
+        "message": "Url created successfully",
         "data": {
           "id": "702573b2-4bf5-4914-b9a8-ea4e2f1dd5bd",
           "url": "http://paypal.pay.abc/password",
           "domain_id": "968c1a6f-ab39-4f4b-b214-d192d5754d28",
           "list_type": "BLACKLIST",
-          "threat_type": "Phising",
+          "threat_type_id": "9b741c89-e3b8-4d05-b61a-3c416f59395c",
           "reason": "This url has the potential to steal your details",
           "source": "google",
           "confidence_score": 90,
@@ -54,7 +54,7 @@
         "body":{
           "url":"http://somedomain.com/password",
           "list_type":"BLACKLIST",
-          "threat_type": "Phishing",
+          "threat_type": "9b741c89-e3b8-4d05-b61a-3c416f59395c",
           "reason": "This url has the potential to steal your details",
           "confidence_score":96,
           "source":"google updated"

@@ -23,24 +23,7 @@ export const urlValidation = [
 
   body("threat_type")
     .optional({ nullable: true })
-    .trim()
-    .toUpperCase()
-    .isIn([
-      "PHISHING",
-      "MALWARE",
-      "RANSOMWARE",
-      "SPAM",
-      "SCAM",
-      "BOTNET",
-      "CRYPTO_MINER",
-      "C2_SERVER",
-      "EXPLOIT_KIT",
-      "TROJAN",
-      "SPYWARE",
-      "ADWARE",
-      "SUSPICIOUS",
-      "OTHER",
-    ])
+    .isUUID()
     .withMessage("Invalid threat type."),
 
   body("reason")

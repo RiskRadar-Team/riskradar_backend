@@ -62,6 +62,22 @@ export async function initialiseDatabaseTable() {
     );
   `);
   /**Insert default values on threat_types table */
+  // await dbPool.query(`
+  //   INSERT INTO threat_types (code, display_name, description, severity)
+  //   VALUES
+  //     ('PHISHING','Phishing','Credential stealing websites',5),
+  //     ('MALWARE','Malware','Distributes malicious software',5),
+  //     ('RANSOMWARE','Ransomware','Encrypts user files for ransom',5),
+  //     ('SCAM','Scam','Fraudulent websites or messages',4),
+  //     ('SPAM','Spam','Unwanted advertising or spam',2),
+  //     ('BOTNET','Botnet','Botnet command and control',5),
+  //     ('SPYWARE','Spyware','Collects user information secretly',4),
+  //     ('ADWARE','Adware','Displays unwanted advertisements',2),
+  //     ('CRYPTO_SCAM','Crypto Scam','Cryptocurrency fraud',5),
+  //     ('CREDENTIAL_THEFT','Credential Theft','Attempts to steal usernames/passwords',5),
+  //     ('OTHER','Other','Unknown threat type',1)
+  //   ON CONFLICT (code) DO NOTHING;
+  // `);
   await dbPool.query(`
     INSERT INTO threat_types (code, display_name, description, severity)
     VALUES
@@ -75,9 +91,15 @@ export async function initialiseDatabaseTable() {
       ('ADWARE','Adware','Displays unwanted advertisements',2),
       ('CRYPTO_SCAM','Crypto Scam','Cryptocurrency fraud',5),
       ('CREDENTIAL_THEFT','Credential Theft','Attempts to steal usernames/passwords',5),
-      ('OTHER','Other','Unknown threat type',1)
+      ('OTHER','Other','Unknown threat type',1),
+      ('CRYPTO_MINER','Crypto Miner','Uses system resources to mine cryptocurrency',4),
+      ('C2_SERVER','C2 Server','Command and control server for malware/botnets',5),
+      ('EXPLOIT_KIT','Exploit Kit','Toolkit used to exploit vulnerabilities',5),
+      ('TROJAN','Trojan','Malicious software disguised as legitimate',5),
+      ('SUSPICIOUS','Suspicious','Potentially harmful or abnormal activity',3)
     ON CONFLICT (code) DO NOTHING;
   `);
+
   /**risk_levels table */
   await dbPool.query(`
     CREATE TABLE IF NOT EXISTS risk_levels (
