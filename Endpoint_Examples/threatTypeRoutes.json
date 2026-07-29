@@ -1,0 +1,20 @@
+{
+  "examples":[
+  
+  
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/threat/all",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{}
+      }
+     
+    },
+    {
+      "url to get single domain":"http://localhost:5000/riskradar/threat/id"
+    }
+  ]
+}

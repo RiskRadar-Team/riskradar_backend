@@ -13,7 +13,7 @@ class DomainService {
       source,
       confidence_score,
     } = domainData;
-
+    //NOTE threat_type check from database is pending
     //check duplicate entry for domain
     const existingDomain = await DomainModel.findByDomainName(domain_name);
     if (existingDomain) {
