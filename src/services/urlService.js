@@ -4,6 +4,7 @@ import DomainModel from "../models/domainModel.js";
 import ApiError from "../utils/ApiError.js";
 import { dbPool } from "../config/db.js";
 import { normailiseDomian } from "../utils/normalizeDomain.js";
+import ThreatTypeModel from "../models/threatTypeModel.js";
 
 class UrlService {
   /**normalise url */
@@ -19,6 +20,13 @@ class UrlService {
     const { url, list_type, threat_type, reason, source, confidence_score } =
       urlData;
     const normailsedUrl = this.normaliseUrl(url);
+    //check for threat type exist or not
+    if (threat_type) {
+      const existingThreatType = await ThreatTypeModel.getById(threat_type);
+      if (!existingThreatType) {
+        throw new ApiError(404, "Threat type does not exist.");
+      }
+    }
     //check duplicate url
     const existingUrl = await UrlModel.findByUrl(normailsedUrl);
     if (existingUrl) {
@@ -94,6 +102,13 @@ class UrlService {
     const { url, list_type, threat_type, reason, source, confidence_score } =
       urlData;
     const normalisedUrlName = this.normaliseUrl(url);
+    //check for threat type exist or not
+    if (threat_type) {
+      const existingThreatType = await ThreatTypeModel.getById(threat_type);
+      if (!existingThreatType) {
+        throw new ApiError(404, "Threat type does not exist.");
+      }
+    }
     if (normalisedUrlName !== isUrlExist.url) {
       //check for duplicate entry
       const duplicateUrl = await UrlModel.findByUrl(normalisedUrlName);
