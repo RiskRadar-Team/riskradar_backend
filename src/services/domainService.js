@@ -1,6 +1,7 @@
 import DomainModel from "../models/domainModel.js";
 import ApiError from "../utils/ApiError.js";
 import { normailiseDomian } from "../utils/normalizeDomain.js";
+import ThreatTypeModel from "../models/threatTypeModel.js";
 
 class DomainService {
   /** Create Domain */
@@ -13,11 +14,18 @@ class DomainService {
       source,
       confidence_score,
     } = domainData;
-    //NOTE threat_type check from database is pending
+    //check for threat type exist or not
+    if (threat_type) {
+      const existingThreatType = await ThreatTypeModel.getById(threat_type);
+      if (!existingThreatType) {
+        throw new ApiError(404, "Threat type does not exist.");
+      }
+    }
+
     //check duplicate entry for domain
     const existingDomain = await DomainModel.findByDomainName(domain_name);
     if (existingDomain) {
-      throw new ApiError(409, "Domian already exits");
+      throw new ApiError(409, "Domian already exists.");
     }
     //normailising domain
     const normalisedDomain = normailiseDomian(domain_name);
@@ -82,6 +90,13 @@ class DomainService {
       source,
       confidence_score,
     } = domainData;
+    //check for threat type exist or not
+    if (threat_type) {
+      const existingThreatType = await ThreatTypeModel.getById(threat_type);
+      if (!existingThreatType) {
+        throw new ApiError(404, "Threat type does not exist.");
+      }
+    }
     //check duplicate domain entry if user changed the domain name
     const normalisedDomain = normailiseDomian(domain_name);
     if (normalisedDomain !== existingDomain.domain_name) {
