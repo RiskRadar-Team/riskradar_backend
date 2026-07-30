@@ -2,12 +2,12 @@ import RiskLevelModel from "../models/riskLevelModel.js";
 import ApiError from "../utils/ApiError.js";
 
 class RiskLevelService {
-  /**get all threat types */
+  /**get all risk levels */
   static async getAllRiskLevel() {
     const risks = await RiskLevelModel.getAll();
     return risks;
   }
-  /**get threat type by id */
+  /**get risk level by id */
   static async getById(id) {
     const risk_level = await RiskLevelModel.getById(id);
     if (!risk_level) {
