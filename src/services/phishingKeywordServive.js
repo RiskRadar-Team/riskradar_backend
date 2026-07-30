@@ -1,6 +1,6 @@
 import PhishingKeywordModel from "../models/phishingKeywordModel.js";
 import ApiError from "../utils/ApiError.js";
-
+import KeywordCategoryModel from "../models/keywordCategoryModel.js";
 class PhishingKeywordService {
   /** Normalize keyword */
   static normaliseKeyword(keyword) {
@@ -20,6 +20,13 @@ class PhishingKeywordService {
     } = keywordData;
 
     const normalisedKeyword = this.normaliseKeyword(keyword);
+    //check for category exist or not
+    if (category) {
+      const existingCategory = await KeywordCategoryModel.getById(category);
+      if (!existingCategory) {
+        throw new ApiError(404, "Keyword category does not exist.");
+      }
+    }
     const existingKeyword =
       await PhishingKeywordModel.findByKeyword(normalisedKeyword);
     if (existingKeyword) {
@@ -69,6 +76,13 @@ class PhishingKeywordService {
       created_by,
     } = keywordData;
     const normalisedKeyword = this.normaliseKeyword(keyword);
+    //check for category exist or not
+    if (category) {
+      const existingCategory = await KeywordCategoryModel.getById(category);
+      if (!existingCategory) {
+        throw new ApiError(404, "Keyword category does not exist.");
+      }
+    }
     if (keyword) {
       if (normalisedKeyword !== existingKeyword.keyword) {
         const isDuplicate =
