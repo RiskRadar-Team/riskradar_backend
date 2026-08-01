@@ -1,0 +1,59 @@
+{
+  "examples":[
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/domain/",
+        "method":"POST",
+        "credentials":"include",
+        "headers": {
+        "Authorization": "Bearer <accessToken>"
+        },
+        "body":{
+          "scan_type":"URL"
+        }
+      },
+      "response":{
+      "success": true,
+      "statusCode": 201,
+      "message": "Scan created successfully.",
+      "data": {
+          "id": "dcb3e342-7268-4424-b0b3-0b25dc273c7f",
+          "user_id": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+          "scan_type": "URL",
+          "status": "PENDING",
+          "risk_score": null,
+          "risk_level_id": null,
+          "is_phishing": null,
+          "scan_duration_ms": null,
+          "engine_version": "1.0.0",
+          "started_at": null,
+          "completed_at": null,
+          "created_at": "2026-08-01T10:57:41.929Z",
+          "updated_at": "2026-08-01T10:57:41.929Z"
+        }
+      }
+    },
+    {
+      "message for frontend": "each request required to have Authorization header with Bearer token",
+      "means the request will look like this":{
+        "credentials":"include",
+        "headers": {
+        "Authorization": "Bearer <accessToken>"
+        }
+      }
+    },
+    {
+      "to get a single scan record by its ID":{
+        "url": "http://localhost:5000/riskradar/scans/<id>",
+        "method": "GET"
+      }
+    },
+    {
+      "To search scans":{
+        "url": "http://localhost:5000/riskradar/scan?page=1&limit=10&seach=4424&scan_type=URL&status=COMPLETED&risk_level_id=e7a27990-75ed-4174-911f-599e48803e9a",
+        "method": "GET",
+        "note": "All query parameters are optional, you can use any combination of them or none at all. If you don't provide any query parameters, it will return all scans with default pagination (page=1, limit=10)."
+      }
+    }
+  ]
+}

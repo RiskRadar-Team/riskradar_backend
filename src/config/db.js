@@ -284,6 +284,56 @@ export async function initialiseDatabaseTable() {
     CREATE INDEX IF NOT EXISTS idx_keywords_match_type
     ON phishing_keywords(match_type);
   `);
-
+  await dbPool.query(`
+      CREATE TABLE IF NOT EXISTS scans (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        user_id UUID
+            REFERENCES users(id)
+            ON DELETE SET NULL,
+        scan_type VARCHAR(20)
+            NOT NULL
+            CHECK (
+                scan_type IN (
+                    'URL',
+                    'EMAIL',
+                    'MESSAGE'
+                )
+            ),
+        status VARCHAR(20)
+            NOT NULL
+            DEFAULT 'PENDING'
+            CHECK (
+                status IN (
+                    'PENDING',
+                    'PROCESSING',
+                    'COMPLETED',
+                    'FAILED'
+                )
+            ),
+        risk_score SMALLINT
+            CHECK (risk_score BETWEEN 0 AND 100),
+        risk_level_id  UUID REFERENCES risk_levels(id)
+            ON DELETE SET NULL,
+        is_phishing BOOLEAN,
+        scan_duration_ms INTEGER,
+        engine_version VARCHAR(20),
+        started_at TIMESTAMP,
+        completed_at TIMESTAMP,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+      CREATE INDEX IF NOT EXISTS idx_scans_user
+      ON scans(user_id);
+      CREATE INDEX IF NOT EXISTS idx_scans_type
+      ON scans(scan_type);
+      CREATE INDEX IF NOT EXISTS idx_scans_status
+      ON scans(status);
+      CREATE INDEX IF NOT EXISTS idx_scans_created_at
+      ON scans(created_at DESC);
+      CREATE INDEX IF NOT EXISTS idx_scans_risk_level
+      ON scans(risk_level_id);
+      CREATE INDEX IF NOT EXISTS idx_scans_is_phishing
+      ON scans(is_phishing);
+    `);
   console.log("Database tables initialized successfully");
 }

@@ -37,6 +37,7 @@ import phishingKeywordRoutes from "./routes/phishingKeywordRoutes.js";
 import threatTypeRoutes from "./routes/threatTypeRoutes.js";
 import riskLevelRoutes from "./routes/riskLevelRoutes.js";
 import keywordCategoryRoutes from "./routes/keywordCategoryRoutes.js";
+import scanRoutes from "./routes/scanRoutes.js";
 
 app.use("/riskradar/auth", authRoutes);
 app.use("/riskradar/user", userRoutes);
@@ -47,6 +48,7 @@ app.use("/riskradar/keyword", phishingKeywordRoutes);
 app.use("/riskradar/threat", threatTypeRoutes);
 app.use("/riskradar/risk", riskLevelRoutes);
 app.use("/riskradar/keyword-category", keywordCategoryRoutes);
+app.use("/riskradar/scan", scanRoutes);
 //end of routes
 
 app.use(errorHandler);
