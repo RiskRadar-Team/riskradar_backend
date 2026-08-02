@@ -335,5 +335,91 @@ export async function initialiseDatabaseTable() {
       CREATE INDEX IF NOT EXISTS idx_scans_is_phishing
       ON scans(is_phishing);
     `);
+  await dbPool.query(`
+      CREATE TABLE IF NOT EXISTS url_scans (
+
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+      scan_id UUID
+          NOT NULL
+          UNIQUE
+          REFERENCES scans(id)
+          ON DELETE CASCADE,
+
+      input_url TEXT NOT NULL,
+
+      normalized_url TEXT NOT NULL,
+
+      final_url TEXT,
+
+      domain_name VARCHAR(255) NOT NULL,
+
+      protocol VARCHAR(20),
+
+      uses_https BOOLEAN NOT NULL DEFAULT FALSE,
+
+      url_length INTEGER,
+
+      hostname_length INTEGER,
+
+      path_length INTEGER,
+
+      query_length INTEGER,
+
+      subdomain_count SMALLINT,
+
+      contains_ip BOOLEAN NOT NULL DEFAULT FALSE,
+
+      contains_shortener BOOLEAN NOT NULL DEFAULT FALSE,
+
+      contains_at_symbol BOOLEAN NOT NULL DEFAULT FALSE,
+
+      contains_hex_encoding BOOLEAN NOT NULL DEFAULT FALSE,
+
+      contains_punycode BOOLEAN NOT NULL DEFAULT FALSE,
+
+      contains_suspicious_tld BOOLEAN NOT NULL DEFAULT FALSE,
+
+      has_non_standard_port BOOLEAN NOT NULL DEFAULT FALSE,
+
+      domain_blacklisted BOOLEAN NOT NULL DEFAULT FALSE,
+
+      url_blacklisted BOOLEAN NOT NULL DEFAULT FALSE,
+
+      reputation_score SMALLINT
+          CHECK (reputation_score BETWEEN 0 AND 100),
+
+      google_safe BOOLEAN,
+
+      virustotal_safe BOOLEAN,
+
+      recommendation TEXT,
+
+      api_response JSONB,
+
+      created_at TIMESTAMP
+          NOT NULL
+          DEFAULT CURRENT_TIMESTAMP,
+          
+      updated_at TIMESTAMP
+          NOT NULL
+          DEFAULT CURRENT_TIMESTAMP
+    );
+
+      CREATE INDEX IF NOT EXISTS idx_url_scans_domain
+      ON url_scans(domain_name);
+
+      CREATE INDEX IF NOT EXISTS idx_url_scans_https
+      ON url_scans(uses_https);
+
+      CREATE INDEX IF NOT EXISTS idx_url_scans_blacklisted_domain
+      ON url_scans(domain_blacklisted);
+
+      CREATE INDEX IF NOT EXISTS idx_url_scans_blacklisted_url
+      ON url_scans(url_blacklisted);
+
+      CREATE INDEX IF NOT EXISTS idx_url_scans_reputation
+      ON url_scans(reputation_score);  
+  `);
   console.log("Database tables initialized successfully");
 }
