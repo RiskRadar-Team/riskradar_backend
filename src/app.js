@@ -38,6 +38,7 @@ import threatTypeRoutes from "./routes/threatTypeRoutes.js";
 import riskLevelRoutes from "./routes/riskLevelRoutes.js";
 import keywordCategoryRoutes from "./routes/keywordCategoryRoutes.js";
 import scanRoutes from "./routes/scanRoutes.js";
+import scanFindingRoutes from "./routes/scanFindingRoutes.js";
 
 app.use("/riskradar/auth", authRoutes);
 app.use("/riskradar/user", userRoutes);
@@ -49,6 +50,7 @@ app.use("/riskradar/threat", threatTypeRoutes);
 app.use("/riskradar/risk", riskLevelRoutes);
 app.use("/riskradar/keyword-category", keywordCategoryRoutes);
 app.use("/riskradar/scan", scanRoutes);
+app.use("/riskradar/scan-findings", scanFindingRoutes);
 //end of routes
 
 app.use(errorHandler);

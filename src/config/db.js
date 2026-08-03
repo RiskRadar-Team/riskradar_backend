@@ -421,5 +421,56 @@ export async function initialiseDatabaseTable() {
       CREATE INDEX IF NOT EXISTS idx_url_scans_reputation
       ON url_scans(reputation_score);  
   `);
+  /** scan findings table */
+  await dbPool.query(`
+        CREATE TABLE IF NOT EXISTS scan_findings (
+
+          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+          scan_id UUID NOT NULL
+              REFERENCES scans(id)
+              ON DELETE CASCADE,
+          finding_type VARCHAR(30)
+              NOT NULL
+              CHECK (
+                  finding_type IN (
+                      'DOMAIN',
+                      'URL',
+                      'KEYWORD',
+                      'HEADER',
+                      'LINK',
+                      'AI',
+                      'REPUTATION',
+                      'OTHER'
+                  )
+              ),
+          finding_value TEXT NOT NULL,
+          severity SMALLINT
+              NOT NULL
+              DEFAULT 3
+              CHECK (severity BETWEEN 1 AND 5),
+          score SMALLINT
+              NOT NULL
+              DEFAULT 0
+              CHECK (score BETWEEN 0 AND 100),
+          description TEXT,
+          source VARCHAR(50),
+          evidence JSONB,
+          created_at TIMESTAMP
+              NOT NULL
+              DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_scan_findings_scan_id
+      ON scan_findings(scan_id);
+
+      CREATE INDEX IF NOT EXISTS idx_scan_findings_type
+      ON scan_findings(finding_type);
+
+      CREATE INDEX IF NOT EXISTS idx_scan_findings_severity
+      ON scan_findings(severity);
+
+      CREATE INDEX IF NOT EXISTS idx_scan_findings_score
+      ON scan_findings(score);
+  `);
   console.log("Database tables initialized successfully");
 }
