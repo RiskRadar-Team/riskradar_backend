@@ -52,8 +52,14 @@ class DomainModel {
   /**find domain by domain name */
   static async findByDomainName(domain_name) {
     try {
+      // const query = `
+      //   SELECT * FROM domains WHERE LOWER(domain_name) = LOWER($1)
+      //   LIMIT 1;
+      // `;
       const query = `
-        SELECT * FROM domains WHERE LOWER(domain_name) = LOWER($1)
+        SELECT * FROM domains
+        WHERE domain_name = $1
+          AND is_active = TRUE
         LIMIT 1;
       `;
       const { rows } = await dbPool.query(query, [domain_name]);

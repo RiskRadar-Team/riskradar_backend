@@ -59,9 +59,15 @@ class UrlModel {
    */
   static async findByUrl(url) {
     try {
+      // const query = `
+      //   SELECT * FROM urls WHERE LOWER(url) = LOWER($1) LIMIT 1;
+      // `;
       const query = `
-        SELECT * FROM urls WHERE LOWER(url) = LOWER($1) LIMIT 1;
-      `;
+         SELECT * FROM urls
+          WHERE url = $1
+          AND is_active = TRUE
+          LIMIT 1;
+        `;
       const { rows } = await dbPool.query(query, [url]);
       return rows[0] || null;
     } catch (error) {

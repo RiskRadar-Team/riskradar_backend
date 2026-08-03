@@ -251,5 +251,19 @@ class PhishingKeywordModel {
       throw error;
     }
   }
+  /**get active phishing keywords */
+  static async getActiveKeywords() {
+    try {
+      const query = `
+        SELECT * FROM phishing_keywords
+        WHERE is_active = TRUE
+        ORDER BY severity DESC, score DESC;
+      `;
+      const { rows } = await dbPool.query(query);
+      return rows;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 export default PhishingKeywordModel;
