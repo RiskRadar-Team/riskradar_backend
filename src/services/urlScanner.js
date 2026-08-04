@@ -6,6 +6,7 @@ import UrlModel from "../models/urlModel.js";
 import DomainModel from "../models/domainModel.js";
 import UrlScanModel from "../models/urlScanModel.js";
 import ScanFindingModel from "../models/scanFindingModel.js";
+import RiskScoreService from "./riskScoreService.js";
 /**
  * Common URL shortener domains.
  *
@@ -135,7 +136,8 @@ class UrlScanner {
     /*
      * Calculate score from findings.
      */
-    const riskScore = this.calculateRiskScore(findings);
+    // const riskScore = this.calculateRiskScore(findings);
+    const riskResult = RiskScoreService.calcutate(findings);
     /**store url scan result */
     const urlScan = await UrlScanModel.create({
       scan_id: scanId,
@@ -168,12 +170,17 @@ class UrlScanner {
       }),
       google_safe: null,
       virustotal_safe: null,
-      recommendation: this.getRecommendation({
-        riskScore,
-        urlBlacklisted,
-        domainBlacklisted,
-        domainWhitelisted,
-      }),
+      // recommendation: this.getRecommendation({
+      //   riskScore,
+      //   urlBlacklisted,
+      //   domainBlacklisted,
+      //   domainWhitelisted,
+      // }),
+      recommendation: riskResult.recommendation,
+      risk_score: riskResult.riskScore,
+      risk_level: riskResult.riskLevel,
+      is_phishing: riskResult.isPhishing,
+      statistics: riskResult.statistics,
       api_response: null,
     });
     /*
@@ -202,13 +209,11 @@ class UrlScanner {
     return {
       urlScan,
       findings: createdFindings,
-      riskScore,
-      recommendation: this.getRecommendation({
-        riskScore,
-        urlBlacklisted,
-        domainBlacklisted,
-        domainWhitelisted,
-      }),
+      riskScore: riskResult.riskScore,
+      recommendation: riskResult.recommendation,
+      riskLevel: riskResult.riskLevel,
+      isPhishing: riskResult.isPhishing,
+      statistics: riskResult.statistics,
       features,
     };
   }
