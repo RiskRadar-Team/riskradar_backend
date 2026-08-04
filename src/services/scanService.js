@@ -27,20 +27,25 @@ class ScanService {
     if (!url || typeof url !== "string" || !url.trim()) {
       throw new ApiError(400, "URL is required.");
     }
+    const startTime = Date.now();
 
+    // PENDING → PROCESSING
+    await ScanModel.updateStatus(scanId, "PROCESSING");
     try {
-      // PENDING → PROCESSING
-      await ScanModel.updateStatus(scanId, "PROCESSING");
-
       const scanResult = await UrlScanner.scan(scanId, url.trim());
 
-      // PROCESSING → COMPLETED
-      await ScanModel.updateStatus(scanId, "COMPLETED");
+      const scanDuration = Date.now() - startTime;
+      await ScanModel.complete(scanId, {
+        risk_score: scanResult.riskScore,
+        risk_level_id: scanResult.riskLevel.id,
+        is_phishing: scanResult.isPhishing,
+        scan_duration_ms: scanDuration,
+      });
 
       return scanResult;
     } catch (error) {
       // PROCESSING → FAILED
-      await ScanModel.updateStatus(scanId, "FAILED");
+      await ScanModel.markFailed(scanId);
 
       throw error;
     }

@@ -1,3 +1,5 @@
+import RiskLevelModel from "../models/riskLevelModel.js";
+import ApiError from "../utils/ApiError.js";
 class RiskScoreService {
   /**
    * Calculate the final risk result from scan findings.
@@ -13,7 +15,7 @@ class RiskScoreService {
    *   source: "DOMAIN_DATABASE"
    * }
    */
-  static calcutate(findings = []) {
+  static async calculate(findings = []) {
     if (!Array.isArray(findings)) {
       findings = [];
     }
@@ -34,7 +36,14 @@ class RiskScoreService {
     /**
      * Determine risk level.
      */
-    const riskLevel = this.getRiskLevel(riskScore);
+    // const riskLevel = this.getRiskLevel(riskScore);
+    const riskLevel = await RiskLevelModel.getByScore(riskScore);
+    if (!riskLevel) {
+      throw new ApiError(
+        500,
+        `No risk level configured for score ${riskScore}.`,
+      );
+    }
 
     /**
      * now determine whether the scan should be considered phishing.

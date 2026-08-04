@@ -137,7 +137,7 @@ class UrlScanner {
      * Calculate score from findings.
      */
     // const riskScore = this.calculateRiskScore(findings);
-    const riskResult = RiskScoreService.calcutate(findings);
+    const riskResult = await RiskScoreService.calculate(findings);
     /**store url scan result */
     const urlScan = await UrlScanModel.create({
       scan_id: scanId,
