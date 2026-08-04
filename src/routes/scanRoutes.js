@@ -17,6 +17,7 @@ const router = Router();
  */
 router.use(authMiddleware);
 
+router.post("/:scanId/url", authMiddleware, ScanController.scanUrl);
 /**
  * Create a new scan
  */

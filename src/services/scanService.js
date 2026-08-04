@@ -1,7 +1,50 @@
 import ScanModel from "../models/scanModel.js";
 import ApiError from "../utils/ApiError.js";
+import UrlScanner from "./urlScanner.js";
 
 class ScanService {
+  /**
+   * call the urlscanner service to scan a url
+   */
+  static async scanUrl(scanId, url) {
+    const scan = await ScanModel.findById(scanId);
+
+    if (!scan) {
+      throw new ApiError(404, "Scan not found.");
+    }
+
+    if (scan.scan_type !== "URL") {
+      throw new ApiError(400, "This scan is not a URL scan.");
+    }
+
+    if (scan.status !== "PENDING") {
+      throw new ApiError(
+        400,
+        `Scan cannot be started because its current status is ${scan.status}.`,
+      );
+    }
+
+    if (!url || typeof url !== "string" || !url.trim()) {
+      throw new ApiError(400, "URL is required.");
+    }
+
+    try {
+      // PENDING → PROCESSING
+      await ScanModel.updateStatus(scanId, "PROCESSING");
+
+      const scanResult = await UrlScanner.scan(scanId, url.trim());
+
+      // PROCESSING → COMPLETED
+      await ScanModel.updateStatus(scanId, "COMPLETED");
+
+      return scanResult;
+    } catch (error) {
+      // PROCESSING → FAILED
+      await ScanModel.updateStatus(scanId, "FAILED");
+
+      throw error;
+    }
+  }
   /**create a new scan */
   static async createScan(userId, scanType) {
     if (!userId) {

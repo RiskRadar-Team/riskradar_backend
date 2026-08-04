@@ -2,6 +2,19 @@ import ScanService from "../services/scanService.js";
 import catchAsync from "../utils/catchAsync.js";
 import ApiResponse from "../utils/ApiResponse.js";
 class ScanController {
+  /**scan a url
+   * POST /riskradar/scans/:id/url
+   */
+  static scanUrl = catchAsync(async (req, res) => {
+    const { scanId } = req.params;
+    const { url } = req.body;
+
+    const result = await ScanService.scanUrl(scanId, url);
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "URL scanned successfully.", result));
+  });
   /**create a new scan
    * POST /riskradar/scans
    */

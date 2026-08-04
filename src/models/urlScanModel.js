@@ -66,6 +66,13 @@ class UrlScanModel {
         data.contains_punycode ?? false,
         data.contains_suspicious_tld ?? false,
         data.has_non_standard_port ?? false,
+        data.domain_blacklisted ?? null,
+        data.url_blacklisted ?? null,
+        data.reputation_score ?? null,
+        data.google_safe ?? null,
+        data.virustotal_safe ?? null,
+        data.recommendation ?? null,
+        data.api_response ?? null,
       ];
 
       const { rows } = await dbPool.query(query, values);
