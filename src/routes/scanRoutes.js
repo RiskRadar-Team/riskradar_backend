@@ -16,6 +16,7 @@ const router = Router();
  * All scan routes require authentication.
  */
 router.use(authMiddleware);
+router.post("/url", authMiddleware, ScanController.createAndScanUrl);
 
 router.post("/:scanId/url", authMiddleware, ScanController.scanUrl);
 /**

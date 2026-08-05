@@ -1,0 +1,17 @@
+{
+  "Example":[
+    {
+      "to scan url": "http://localhost:5000/riskradar/scan/url",
+      "method": "POST",
+      
+      "headers": {
+        "Authorization": "Bearer <your_token>"
+      },
+      "credentials": "include",
+      "body": {
+        "url": "https://www.example.com"
+      }
+
+    }
+  ]
+}

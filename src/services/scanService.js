@@ -50,6 +50,55 @@ class ScanService {
       throw error;
     }
   }
+  /** create new url scan and scan the url
+   * this will make the request
+   * POST http://localhost:5000/riskradar/scan/url
+   */
+  static async createAndScanUrl(userId, inputUrl) {
+    if (!userId) {
+      throw new ApiError(400, "User id is required.");
+    }
+
+    if (!inputUrl || typeof inputUrl !== "string" || !inputUrl.trim()) {
+      throw new ApiError(400, "URL is required.");
+    }
+
+    const startTime = Date.now();
+
+    // 1. Create parent scan
+    const scan = await ScanModel.create({
+      user_id: userId,
+      scan_type: "URL",
+      status: "PENDING",
+    });
+
+    try {
+      // 2. Move scan to PROCESSING
+      await ScanModel.updateStatus(scan.id, "PROCESSING");
+
+      // 3. Run URL scanner
+      const scanResult = await UrlScanner.scan(scan.id, inputUrl.trim());
+
+      // 4. Calculate duration
+      const scanDuration = Date.now() - startTime;
+
+      // 5. Complete parent scan
+      const completedScan = await ScanModel.complete(scan.id, {
+        risk_score: scanResult.riskScore,
+        risk_level_id: scanResult.riskLevel.id,
+        is_phishing: scanResult.isPhishing,
+        scan_duration_ms: scanDuration,
+      });
+
+      return {
+        scan: completedScan,
+        result: scanResult,
+      };
+    } catch (error) {
+      await ScanModel.markFailed(scan.id);
+      throw error;
+    }
+  }
   /**create a new scan */
   static async createScan(userId, scanType) {
     if (!userId) {
