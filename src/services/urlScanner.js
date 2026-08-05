@@ -7,6 +7,7 @@ import DomainModel from "../models/domainModel.js";
 import UrlScanModel from "../models/urlScanModel.js";
 import ScanFindingModel from "../models/scanFindingModel.js";
 import RiskScoreService from "./riskScoreService.js";
+import UrlReputationService from "./urlReputationService.js";
 /**
  * Common URL shortener domains.
  *
@@ -132,6 +133,62 @@ class UrlScanner {
       },
       findings,
     );
+    /**check for reputation providers */
+    const reputationResult = await UrlReputationService.checkUrl(normalisedUrl);
+    if (reputationResult.google.malicious) {
+      findings.push({
+        finding_type: "REPUTATION",
+        finding_value: "GOOGLE_SAFE_BROWSING",
+        severity: 5,
+        score: 60,
+        description: "Google Safe Browsing identified this URL as unsafe.",
+        source: "GOOGLE_SAFE_BROWSING",
+        evidence: {
+          response: reputationResult.google.response,
+        },
+      });
+    }
+
+    if (reputationResult.virustotal.malicious) {
+      const analysis = reputationResult.virustotal.analysis;
+
+      findings.push({
+        finding_type: "REPUTATION",
+        finding_value: "VIRUSTOTAL_MALICIOUS",
+        severity: 5,
+        score: Math.min(60, 20 + Number(analysis?.malicious || 0) * 5),
+        description:
+          "VirusTotal detected malicious security engines for this URL.",
+        source: "VIRUSTOTAL",
+        evidence: {
+          malicious: analysis?.malicious || 0,
+
+          suspicious: analysis?.suspicious || 0,
+
+          harmless: analysis?.harmless || 0,
+
+          undetected: analysis?.undetected || 0,
+        },
+      });
+    }
+    if (
+      !reputationResult.virustotal.malicious &&
+      reputationResult.virustotal.suspicious
+    ) {
+      findings.push({
+        finding_type: "REPUTATION",
+        finding_value: "VIRUSTOTAL_SUSPICIOUS",
+        severity: 3,
+        score: 20,
+        description: "VirusTotal identified suspicious signals for this URL.",
+        source: "VIRUSTOTAL",
+        evidence: {
+          malicious: reputationResult.virustotal.analysis?.malicious || 0,
+
+          suspicious: reputationResult.virustotal.analysis?.suspicious || 0,
+        },
+      });
+    }
     this.generateKeywordFindings(keywordMatches, findings);
     /*
      * Calculate score from findings.
@@ -161,15 +218,17 @@ class UrlScanner {
       has_non_standard_port: features.hasNonStandardPort,
       domain_blacklisted: domainBlacklisted,
       url_blacklisted: urlBlacklisted,
-      reputation_score: this.calculateReputationScore({
-        urlBlacklisted,
-        domainBlacklisted,
-        domainWhitelisted,
-        domainRecord,
-        urlRecord,
-      }),
-      google_safe: null,
-      virustotal_safe: null,
+      // reputation_score: this.calculateReputationScore({
+      //   urlBlacklisted,
+      //   domainBlacklisted,
+      //   domainWhitelisted,
+      //   domainRecord,
+      //   urlRecord,
+      // }),
+      reputation_score: reputationResult.reputationScore,
+      google_safe: reputationResult.google.safe,
+
+      virustotal_safe: reputationResult.virustotal.safe,
       // recommendation: this.getRecommendation({
       //   riskScore,
       //   urlBlacklisted,
@@ -181,7 +240,9 @@ class UrlScanner {
       risk_level: riskResult.riskLevel,
       is_phishing: riskResult.isPhishing,
       statistics: riskResult.statistics,
-      api_response: null,
+      api_response: {
+        reputation: reputationResult,
+      },
     });
     /*
      * Insert findings into scan_findings.
