@@ -7,4 +7,7 @@ scripts/
 copy.js
 schema_updated.sql
 somenotes.js
+somejson.json
 urlScanner_copy.js  
+emailScanner_copy.js  
+notes.txt

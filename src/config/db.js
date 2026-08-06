@@ -472,5 +472,33 @@ export async function initialiseDatabaseTable() {
       CREATE INDEX IF NOT EXISTS idx_scan_findings_score
       ON scan_findings(score);
   `);
+
+  await dbPool.query(`
+      CREATE TABLE IF NOT EXISTS email_scans (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        scan_id UUID UNIQUE NOT NULL
+            REFERENCES scans(id)
+            ON DELETE CASCADE,
+        sender_email TEXT,
+        sender_domain VARCHAR(255),
+        reply_to TEXT,
+        return_path TEXT,
+        subject TEXT,
+        body TEXT,
+        suspicious_links TEXT[],
+        suspicious_keywords TEXT[],
+        attachment_found BOOLEAN,
+        urgency_detected BOOLEAN,
+        credential_request BOOLEAN,
+        spoof_detected BOOLEAN,
+        spf_result VARCHAR(20),
+        dkim_result VARCHAR(20),
+        dmarc_result VARCHAR(20),
+        ai_summary TEXT,
+        api_response JSONB,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
   console.log("Database tables initialized successfully");
 }

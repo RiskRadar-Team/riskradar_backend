@@ -12,6 +12,24 @@
         "url": "https://www.example.com"
       }
 
+    },
+    {
+      "to scan email": "http://localhost:5000/riskradar/scan/email",
+      "method": "POST",
+      
+      "headers": {
+        "Authorization": "Bearer <your_token>"
+      },
+      "credentials": "include",
+      "body": {
+        "sender_email": "security@example.com",
+        "reply_to": "security@example.com",
+        "return_path": "bounce@example.com",
+        "subject": "Urgent: Verify your account",
+        "body": "Your account requires immediate verification. Please login to continue.",
+        "attachment_found": false
+      },
+      "note for frontend":"Here sender_email is required field for backend but for frontend required fields should include sender_email and body."
     }
   ]
 }
