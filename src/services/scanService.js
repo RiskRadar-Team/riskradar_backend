@@ -70,6 +70,7 @@ class ScanService {
       user_id: userId,
       scan_type: "URL",
       status: "PENDING",
+      engine_version: "1.0.0",
     });
 
     try {

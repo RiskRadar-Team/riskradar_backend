@@ -45,6 +45,7 @@ class EmailScanService {
       user_id: userId,
       scan_type: "EMAIL",
       status: "PENDING",
+      engine_version: "1.0.0",
     });
 
     try {

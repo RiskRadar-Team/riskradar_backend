@@ -11,6 +11,8 @@ import {
 } from "../validations/scanValidation.js";
 import emailScanValidation from "../validations/emailScanValidation.js";
 import EmailScanController from "../controllers/emailScanController.js";
+import messageScanValidation from "../validations/messageScanValidation.js";
+import MessageScanController from "../controllers/messageScanController.js";
 
 const router = Router();
 
@@ -18,20 +20,25 @@ const router = Router();
  * All scan routes require authentication.
  */
 router.use(authMiddleware);
-router.post("/url", authMiddleware, ScanController.createAndScanUrl);
+router.post("/url", ScanController.createAndScanUrl);
 
-router.post("/:scanId/url", authMiddleware, ScanController.scanUrl);
+router.post("/:scanId/url", ScanController.scanUrl);
 
 /**
  * Create and scan an email.
  *
  * POST /riskradar/scan/email
  */
+router.post("/email", emailScanValidation, EmailScanController.scanEmail);
+/**
+ * Create and scan an email.
+ *
+ * POST /riskradar/scan/email
+ */
 router.post(
-  "/email",
-  authMiddleware,
-  emailScanValidation,
-  EmailScanController.scanEmail,
+  "/message",
+  messageScanValidation,
+  MessageScanController.scanMessage,
 );
 /**
  * Create a new scan

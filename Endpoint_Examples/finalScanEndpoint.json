@@ -30,6 +30,38 @@
         "attachment_found": false
       },
       "note for frontend":"Here sender_email is required field for backend but for frontend required fields should include sender_email and body."
+    },{
+      "to scan message": "http://localhost:5000/riskradar/scan/message",
+      "method": "POST",
+      
+      "headers": {
+        "Authorization": "Bearer <your_token>"
+      },
+      "credentials": "include",
+      "body": {
+        "platform": "TELEGRAM",
+        "sender": "Pritam",
+        "sender_id": "Pritam_123",
+        "language": "en",
+        "message": "Your PayPal account has been suspended.Verify your password immediately.Buy a gift card and send the code.."
+      },
+      "note for frontend":"Here message are required fields for backend but for frontend required fields should include platform and message.",
+      "and platform can be one of the following": [
+        "SMS",
+        "WHATSAPP",
+        "TELEGRAM",
+        "MESSENGER",
+        "SIGNAL",
+        "DISCORD",
+        "SLACK",
+        "FACEBOOK",
+        "INSTAGRAM",
+        "TWITTER",
+        "LINKEDIN",
+        "SNAPCHAT",
+        "TIKTOK",
+        "OTHER"
+      ]
     }
   ]
 }

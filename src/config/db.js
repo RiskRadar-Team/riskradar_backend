@@ -500,5 +500,68 @@ export async function initialiseDatabaseTable() {
         updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
       );
     `);
+  await dbPool.query(`
+        CREATE TABLE IF NOT EXISTS message_scans (
+
+          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+          scan_id UUID UNIQUE NOT NULL
+              REFERENCES scans(id)
+              ON DELETE CASCADE,
+          platform VARCHAR(30)
+              CHECK (
+                  platform IN (
+                      'SMS',
+                      'WHATSAPP',
+                      'TELEGRAM',
+                      'MESSENGER',
+                      'SIGNAL',
+                      'DISCORD',
+                      'SLACK',
+                      'FACEBOOK',
+                      'INSTAGRAM',
+                      'TWITTER',
+                      'LINKEDIN',
+                      'SNAPCHAT',
+                      'TIKTOK',
+                      'OTHER'
+                  )
+              ),
+          sender TEXT,
+          sender_id TEXT,
+          message TEXT NOT NULL,
+          language VARCHAR(20),
+          suspicious_links TEXT[],
+          suspicious_keywords TEXT[],
+          urgency_detected BOOLEAN NOT NULL DEFAULT FALSE,
+          credential_request BOOLEAN NOT NULL DEFAULT FALSE,
+          financial_request BOOLEAN NOT NULL DEFAULT FALSE,
+          impersonation_detected BOOLEAN NOT NULL DEFAULT FALSE,
+          shortened_url_detected BOOLEAN NOT NULL DEFAULT FALSE,
+          phone_number_detected BOOLEAN NOT NULL DEFAULT FALSE,
+          email_detected BOOLEAN NOT NULL DEFAULT FALSE,
+          scam_type VARCHAR(100),
+          ai_summary TEXT,
+          api_response JSONB,
+          created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+      CREATE INDEX IF NOT EXISTS idx_message_scans_platform
+      ON message_scans(platform);
+
+      CREATE INDEX IF NOT EXISTS idx_message_scans_sender
+      ON message_scans(sender);
+
+      CREATE INDEX IF NOT EXISTS idx_message_scans_scam_type
+      ON message_scans(scam_type);
+
+      CREATE INDEX IF NOT EXISTS idx_message_scans_urgency
+      ON message_scans(urgency_detected);
+
+      CREATE INDEX IF NOT EXISTS idx_message_scans_impersonation
+      ON message_scans(impersonation_detected);
+
+      CREATE INDEX IF NOT EXISTS idx_message_scans_created_at
+      ON message_scans(created_at)
+    `);
   console.log("Database tables initialized successfully");
 }
