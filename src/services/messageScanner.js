@@ -68,11 +68,25 @@ class MessageScanner {
       shortenedUrlDetected,
       detectedLanguage,
     };
-    const aiResult = await AIScanner.analyseMessage(aiInput);
-    const aiFindings = await AIScanner.generateFindings(aiResult);
     const findings = [];
+    //ai
+    const aiPromise = AIScanner.analyseMessage(aiInput);
+    //wait for ai max 15 sec
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("AI timeout")), 15000),
+    );
+    let aiResult = null;
+    try {
+      // aiResult = await AIScanner.analyseMessage(aiInput);
+      aiResult = await Promise.race([aiPromise, timeoutPromise]);
+      const aiFindings = await AIScanner.generateFindings(aiResult);
+      findings.push(...aiFindings);
+    } catch (error) {
+      console.error("AI message analysis failed:", error.message);
+    }
+
     // findings.push(...aiResult.findings);
-    findings.push(...aiFindings);
+
     const scannedUrls = [];
 
     for (const url of urls) {
@@ -322,9 +336,13 @@ class MessageScanner {
 
       scam_type: scamType,
 
-      ai_summary: null,
+      ai_summary: aiResult.summary,
 
+      // api_response: {
+      //   scannedUrls,
+      // },
       api_response: {
+        ai: aiResult,
         scannedUrls,
       },
     });
@@ -375,6 +393,13 @@ class MessageScanner {
         emails,
 
         phoneNumbers,
+      },
+      ai: {
+        confidence: aiResult.confidence,
+
+        category: aiResult.category,
+
+        summary: aiResult.summary,
       },
     };
   }
