@@ -148,6 +148,238 @@ ${JSON.stringify(messageData, null, 2)}
       };
     }
   }
+  /**
+   * Convert Gemini response into RiskRadar findings.
+   */
+  static generateFindings(aiResponse) {
+    if (!aiResponse || !Array.isArray(aiResponse.findings)) {
+      return [];
+    }
+
+    return aiResponse.findings.map((finding) => ({
+      finding_type: "AI",
+
+      finding_value: finding.finding_value ?? "AI_DETECTION",
+
+      severity: Number(finding.severity) || 3,
+
+      score: Number(finding.score) || 10,
+
+      description: finding.description ?? "AI detected suspicious content.",
+
+      source: "GEMINI_AI",
+
+      evidence: {
+        confidence: aiResponse.confidence ?? 0,
+
+        category: aiResponse.category ?? "Unknown",
+
+        summary: aiResponse.summary ?? "",
+      },
+    }));
+  }
+  /**
+   * Analyse an email using Gemini.
+   */
+  static async analyseEmail(emailData) {
+    if (!emailData) {
+      throw new ApiError(400, "Email data is required.");
+    }
+
+    const prompt = `
+      You are an expert cybersecurity analyst specializing in phishing emails.
+
+      Your task is to determine whether this email is malicious.
+
+      The rule engine has already extracted technical indicators.
+      Do NOT repeat them.
+      Instead, analyse the context, intent, social engineering,
+      impersonation, and likelihood of phishing.
+
+      Return ONLY valid JSON.
+
+      Do NOT use markdown.
+
+      Return exactly this schema:
+
+      {
+          "isPhishing": boolean,
+          "confidence": number,
+          "riskScore": number,
+          "category": string,
+          "summary": string,
+          "findings":[
+              {
+                  "finding_value": string,
+                  "severity": number,
+                  "score": number,
+                  "description": string
+              }
+          ]
+      }
+
+      Rules:
+
+      confidence = 0-100
+
+      riskScore = 0-100
+
+      severity = 1-5
+
+      score = 0-100
+
+      Possible categories:
+
+      Credential Theft
+
+      Business Email Compromise
+
+      Invoice Fraud
+
+      Financial Fraud
+
+      Tech Support Scam
+
+      Refund Scam
+
+      Delivery Scam
+
+      Government Scam
+
+      Identity Theft
+
+      Lottery Scam
+
+      Investment Scam
+
+      Unknown
+
+      Email:
+
+      ${JSON.stringify(emailData, null, 2)}
+      `;
+
+    try {
+      const response = await ai.models.generateContent({
+        model: process.env.GEMINI_MODEL || "gemini-3.6-flash",
+
+        contents: prompt,
+      });
+
+      const cleaned = response.text
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
+
+      const json = JSON.parse(cleaned);
+
+      return json;
+    } catch (error) {
+      console.error(error);
+
+      throw new ApiError(500, "AI email analysis failed.");
+    }
+  }
+  /**
+   * Analyse a URL using Gemini.
+   */
+  static async analyseUrl(urlData) {
+    if (!urlData) {
+      throw new ApiError(400, "URL data is required.");
+    }
+
+    const prompt = `
+      You are an expert cybersecurity analyst specializing in phishing URL detection.
+
+      The rule engine has already extracted URL features and reputation data.
+
+      Do NOT repeat rule-engine detections.
+
+      Instead:
+
+      - Evaluate the overall phishing likelihood.
+      - Identify social engineering intent.
+      - Explain why the URL appears suspicious or legitimate.
+      - Produce additional AI findings only if they add value.
+
+      Return ONLY valid JSON.
+
+      Do NOT use markdown.
+
+      Return exactly this schema:
+
+      {
+          "isPhishing": boolean,
+          "confidence": number,
+          "riskScore": number,
+          "category": string,
+          "summary": string,
+          "findings":[
+              {
+                  "finding_value": string,
+                  "severity": number,
+                  "score": number,
+                  "description": string
+              }
+          ]
+      }
+
+      Rules:
+
+      confidence = 0-100
+
+      riskScore = 0-100
+
+      severity = 1-5
+
+      score = 0-100
+
+      Possible categories:
+
+      Credential Theft
+
+      Fake Login Page
+
+      Brand Impersonation
+
+      Typosquatting
+
+      Malware Distribution
+
+      Phishing Landing Page
+
+      Suspicious URL
+
+      Legitimate
+
+      Unknown
+
+      URL Analysis:
+
+      ${JSON.stringify(urlData, null, 2)}
+      `;
+
+    try {
+      const response = await ai.models.generateContent({
+        model: process.env.GEMINI_MODEL,
+
+        contents: prompt,
+      });
+
+      const cleaned = response.text
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
+
+      const json = JSON.parse(cleaned);
+
+      return json;
+    } catch (error) {
+      console.error(error);
+
+      throw new ApiError(500, "AI URL analysis failed.");
+    }
+  }
 }
 export default AIScanner;
 

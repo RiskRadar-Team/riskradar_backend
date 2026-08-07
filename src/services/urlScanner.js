@@ -8,6 +8,7 @@ import UrlScanModel from "../models/urlScanModel.js";
 import ScanFindingModel from "../models/scanFindingModel.js";
 import RiskScoreService from "./riskScoreService.js";
 import UrlReputationService from "./urlReputationService.js";
+import AIScanner from "./aiScanner.js";
 /**
  * Common URL shortener domains.
  *
@@ -116,12 +117,12 @@ class UrlScanner {
       normalisedUrl,
       url,
     );
+
+    const findings = [];
     /**
      * calculate intital rule-based score.
-     *
-     * AI will be added later
+     
      */
-    const findings = [];
     this.generateUrlFindings(features, findings);
     this.generateReputationFindings(
       {
@@ -244,6 +245,26 @@ class UrlScanner {
         reputation: reputationResult,
       },
     });
+    //ai
+    const aiInput = {
+      inputUrl,
+      normalizedUrl: normalisedUrl,
+      hostname: url.hostname,
+      googleSafe: reputationResult.google.safe,
+      virustotalSafe: reputationResult.virustotal.safe,
+      domainBlacklisted,
+      domainWhitelisted,
+      urlBlacklisted,
+      keywordMatches,
+      features,
+      recommendation: riskResult.recommendation,
+      riskScore: riskResult.riskScore,
+    };
+    const aiResult = await AIScanner.analyseUrl(aiInput);
+
+    const aiFindings = AIScanner.generateFindings(aiResult);
+
+    findings.push(...aiFindings);
     /*
      * Insert findings into scan_findings.
      *

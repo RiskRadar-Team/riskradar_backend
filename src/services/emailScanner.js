@@ -5,6 +5,7 @@ import ScanFindingModel from "../models/scanFindingModel.js";
 import PhishingKeywordModel from "../models/phishingKeywordModel.js";
 
 import RiskScoreService from "./riskScoreService.js";
+import AIScanner from "./aiScanner.js";
 
 class EmailScanner {
   /**
@@ -176,11 +177,29 @@ class EmailScanner {
       dmarcResult: dmarc_result,
     });
 
+    const aiInput = {
+      sender_email,
+      senderDomain,
+      reply_to,
+      return_path,
+      subject,
+      body,
+      suspiciousLinks,
+      attachment_found,
+      urgencyDetected,
+      credentialRequest,
+      spoofDetected,
+      spf_result,
+      dkim_result,
+      dmarc_result,
+    };
+    const aiResult = await AIScanner.analyseEmail(aiInput);
+    const aiFindings = await AIScanner.generateFindings(aiResult);
     /*
      * Generate findings.
      */
     const findings = [];
-
+    findings.push(...aiFindings);
     /*
      * Sender/domain findings.
      */

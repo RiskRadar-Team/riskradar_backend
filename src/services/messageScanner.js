@@ -69,8 +69,10 @@ class MessageScanner {
       detectedLanguage,
     };
     const aiResult = await AIScanner.analyseMessage(aiInput);
+    const aiFindings = await AIScanner.generateFindings(aiResult);
     const findings = [];
-    findings.push(...aiResult.findings);
+    // findings.push(...aiResult.findings);
+    findings.push(...aiFindings);
     const scannedUrls = [];
 
     for (const url of urls) {
