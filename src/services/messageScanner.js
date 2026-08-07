@@ -11,6 +11,7 @@ import PhishingKeywordModel from "../models/phishingKeywordModel.js";
 import UrlScanner from "./urlScanner.js";
 import UrlReputationService from "./urlReputationService.js";
 import RiskScoreService from "./riskScoreService.js";
+import AIScanner from "./aiScanner.js";
 
 class MessageScanner {
   static async scan(scanId, messageData) {
@@ -54,8 +55,22 @@ class MessageScanner {
     const detectedLanguage = language ?? this.detectLanguage(message);
 
     const scamType = this.detectScamType(message);
+    //Input for AI
+    const aiInput = {
+      urls,
+      emails,
+      phoneNumbers,
+      keywordMatches,
+      urgencyDetected,
+      credentialRequest,
+      financialRequest,
+      impersonationDetected,
+      shortenedUrlDetected,
+      detectedLanguage,
+    };
+    const aiResult = await AIScanner.analyseMessage(aiInput);
     const findings = [];
-
+    findings.push(...aiResult.findings);
     const scannedUrls = [];
 
     for (const url of urls) {
@@ -758,47 +773,47 @@ class MessageScanner {
       });
     }
 
-    /*
-     * Google Safe Browsing.
-     */
-    if (reputation?.google?.safe === false) {
-      findings.push({
-        finding_type: "URL",
+    // /*
+    //  * Google Safe Browsing.
+    //  */
+    // if (reputation?.google?.safe === false) {
+    //   findings.push({
+    //     finding_type: "URL",
 
-        finding_value: "GOOGLE_UNSAFE",
+    //     finding_value: "GOOGLE_UNSAFE",
 
-        severity: 5,
+    //     severity: 5,
 
-        score: 40,
+    //     score: 40,
 
-        description: "Google Safe Browsing flagged this URL.",
+    //     description: "Google Safe Browsing flagged this URL.",
 
-        source: "GOOGLE_SAFE_BROWSING",
+    //     source: "GOOGLE_SAFE_BROWSING",
 
-        evidence: reputation.google.response,
-      });
-    }
+    //     evidence: reputation.google.response,
+    //   });
+    // }
 
-    /*
-     * VirusTotal.
-     */
-    if (reputation?.virustotal?.malicious) {
-      findings.push({
-        finding_type: "URL",
+    // /*
+    //  * VirusTotal.
+    //  */
+    // if (reputation?.virustotal?.malicious) {
+    //   findings.push({
+    //     finding_type: "URL",
 
-        finding_value: "VIRUSTOTAL_MALICIOUS",
+    //     finding_value: "VIRUSTOTAL_MALICIOUS",
 
-        severity: 5,
+    //     severity: 5,
 
-        score: 40,
+    //     score: 40,
 
-        description: "VirusTotal marked this URL as malicious.",
+    //     description: "VirusTotal marked this URL as malicious.",
 
-        source: "VIRUSTOTAL",
+    //     source: "VIRUSTOTAL",
 
-        evidence: reputation.virustotal.response,
-      });
-    }
+    //     evidence: reputation.virustotal.response,
+    //   });
+    // }
   }
   /**
    * Generate findings from URL features.
