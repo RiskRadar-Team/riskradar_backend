@@ -1,0 +1,104 @@
+{
+    "success": true,
+    "statusCode": 200,
+    "message": "Email scanned successfully.",
+    "data": {
+        "scan": {
+            "id": "21cef963-cd8e-4f11-a0eb-2699d8c832ea",
+            "user_id": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+            "scan_type": "EMAIL",
+            "status": "COMPLETED",
+            "risk_score": 45,
+            "risk_level_id": "e7a27990-75ed-4174-911f-599e48803e9a",
+            "is_phishing": false,
+            "scan_duration_ms": 15199,
+            "engine_version": "1.0.0",
+            "started_at": null,
+            "completed_at": "2026-08-09T13:22:53.718Z",
+            "created_at": "2026-08-09T13:22:38.519Z",
+            "updated_at": "2026-08-09T13:22:38.532Z"
+        },
+        "emailScan": {
+            "id": "2dbb9d51-f28a-42da-85e4-e02fe7317173",
+            "scan_id": "21cef963-cd8e-4f11-a0eb-2699d8c832ea",
+            "sender_email": "security@example.com",
+            "sender_domain": "example.com",
+            "reply_to": "security@example.com",
+            "return_path": "bounce@example.com",
+            "subject": "Urgent: Verify your account",
+            "body": "Your account requires immediate verification. Please login to continue.",
+            "suspicious_links": [],
+            "suspicious_keywords": [],
+            "attachment_found": false,
+            "urgency_detected": true,
+            "credential_request": true,
+            "spoof_detected": false,
+            "spf_result": null,
+            "dkim_result": null,
+            "dmarc_result": null,
+            "ai_summary": null,
+            "api_response": {
+                "ai": null
+            },
+            "created_at": "2026-08-09T13:22:53.679Z",
+            "updated_at": "2026-08-09T13:22:53.679Z"
+        },
+        "findings": [
+            {
+                "id": "87a0a63b-fc26-45ea-bec8-4dacb2477fd5",
+                "scan_id": "21cef963-cd8e-4f11-a0eb-2699d8c832ea",
+                "finding_type": "OTHER",
+                "finding_value": "URGENT_LANGUAGE",
+                "severity": 3,
+                "score": 15,
+                "description": "The email contains language commonly used to create urgency or pressure the recipient.",
+                "source": "EMAIL_RULE_ENGINE",
+                "evidence": {
+                    "subject": "Urgent: Verify your account"
+                },
+                "created_at": "2026-08-09T13:22:53.697Z"
+            },
+            {
+                "id": "6822aef1-2a14-491a-9bd3-41cc9d3eec3a",
+                "scan_id": "21cef963-cd8e-4f11-a0eb-2699d8c832ea",
+                "finding_type": "OTHER",
+                "finding_value": "CREDENTIAL_REQUEST",
+                "severity": 5,
+                "score": 30,
+                "description": "The email appears to request sensitive credentials or authentication information.",
+                "source": "EMAIL_RULE_ENGINE",
+                "evidence": {
+                    "subject": "Urgent: Verify your account"
+                },
+                "created_at": "2026-08-09T13:22:53.715Z"
+            }
+        ],
+        "riskScore": 45,
+        "riskLevel": {
+            "id": "e7a27990-75ed-4174-911f-599e48803e9a",
+            "code": "MEDIUM",
+            "display_name": "Medium Risk",
+            "min_score": 40,
+            "max_score": 69,
+            "color": "yellow",
+            "created_at": "2026-07-28T15:11:44.095Z",
+            "updated_at": "2026-07-28T15:11:44.095Z"
+        },
+        "isPhishing": false,
+        "recommendation": "WARN",
+        "statistics": {
+            "totalFindings": 2,
+            "criticalFindings": 1,
+            "highFindings": 0,
+            "mediumFindings": 1,
+            "lowFindings": 0,
+            "domainFindings": 0,
+            "urlFindings": 0,
+            "keywordFindings": 0,
+            "reputationFindings": 0,
+            "aiFindings": 0,
+            "otherFindings": 2,
+            "totalFindingScore": 45
+        }
+    }
+}

@@ -80,6 +80,8 @@ class MessageScanner {
       // aiResult = await AIScanner.analyseMessage(aiInput);
       aiResult = await Promise.race([aiPromise, timeoutPromise]);
       const aiFindings = await AIScanner.generateFindings(aiResult);
+      // if (aiFindings) {
+      // }
       findings.push(...aiFindings);
     } catch (error) {
       console.error("AI message analysis failed:", error.message);
@@ -336,7 +338,7 @@ class MessageScanner {
 
       scam_type: scamType,
 
-      ai_summary: aiResult.summary,
+      ai_summary: aiResult?.summary ?? null,
 
       // api_response: {
       //   scannedUrls,

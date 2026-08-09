@@ -193,13 +193,28 @@ class EmailScanner {
       dkim_result,
       dmarc_result,
     };
-    const aiResult = await AIScanner.analyseEmail(aiInput);
-    const aiFindings = await AIScanner.generateFindings(aiResult);
+    //AI with timeout handling
+    let aiResult = null;
+    try {
+      const aiPromise = AIScanner.analyseEmail(aiInput);
+      const timeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("AI scanning timed out")), 15000),
+      );
+      aiResult = await Promise.race([aiPromise, timeout]);
+      const aiFindings = await AIScanner.generateFindings(aiResult);
+      // if (aiFindings) {
+      // }
+      findings.push(...aiFindings);
+    } catch (error) {
+      console.error("AI scanning failed:", error);
+    }
+    // const aiResult = await AIScanner.analyseEmail(aiInput);
+    // const aiFindings = await AIScanner.generateFindings(aiResult);
     /*
      * Generate findings.
      */
     const findings = [];
-    findings.push(...aiFindings);
+    // findings.push(...aiFindings);
     /*
      * Sender/domain findings.
      */
@@ -384,7 +399,8 @@ class EmailScanner {
 
       suspicious_keywords: keywordMatches.map((item) => item.keyword),
 
-      attachment_found: attachment_found === true,
+      attachment_found: attachment_found,
+      // attachment_found: attachment_found === true,
 
       urgency_detected: urgencyDetected,
 
@@ -398,9 +414,11 @@ class EmailScanner {
 
       dmarc_result: dmarc_result,
 
-      ai_summary: null,
+      ai_summary: aiResult?.summary ?? null,
 
-      api_response: null,
+      api_response: {
+        ai: aiResult ?? null,
+      },
     });
 
     /*
@@ -447,6 +465,13 @@ class EmailScanner {
       recommendation: riskResult.recommendation,
 
       statistics: riskResult.statistics,
+      ai: aiResult
+        ? {
+            confidence: aiResult.confidence,
+            summary: aiResult.summary,
+            category: aiResult.category,
+          }
+        : null,
     };
   }
 

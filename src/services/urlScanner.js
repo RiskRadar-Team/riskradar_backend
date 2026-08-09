@@ -250,6 +250,7 @@ class UrlScanner {
       inputUrl,
       normalizedUrl: normalisedUrl,
       hostname: url.hostname,
+      protocol: url.protocol.replace(":", ""),
       googleSafe: reputationResult.google.safe,
       virustotalSafe: reputationResult.virustotal.safe,
       domainBlacklisted,
@@ -260,11 +261,25 @@ class UrlScanner {
       recommendation: riskResult.recommendation,
       riskScore: riskResult.riskScore,
     };
-    const aiResult = await AIScanner.analyseUrl(aiInput);
+    let aiResult = null;
+    try {
+      const aiPromise = AIScanner.analyseUrl(aiInput);
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error("AI analysis timeout")));
+      });
+      aiResult = await Promise.race([aiPromise, timeoutPromise]);
 
-    const aiFindings = AIScanner.generateFindings(aiResult);
+      const aiFindings = AIScanner.generateFindings(aiResult);
 
-    findings.push(...aiFindings);
+      findings.push(...aiFindings);
+    } catch (error) {
+      console.error("AI URL analysis skipped:", error.message);
+    }
+    // const aiResult = await AIScanner.analyseUrl(aiInput);
+
+    // const aiFindings = AIScanner.generateFindings(aiResult);
+
+    // findings.push(...aiFindings);
     /*
      * Insert findings into scan_findings.
      *
