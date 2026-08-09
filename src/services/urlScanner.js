@@ -196,6 +196,37 @@ class UrlScanner {
      */
     // const riskScore = this.calculateRiskScore(findings);
     const riskResult = await RiskScoreService.calculate(findings);
+    //ai
+    const aiInput = {
+      inputUrl,
+      normalizedUrl: normalisedUrl,
+      hostname: url.hostname,
+      protocol: url.protocol.replace(":", ""),
+      googleSafe: reputationResult.google.safe,
+      virustotalSafe: reputationResult.virustotal.safe,
+      domainBlacklisted,
+      domainWhitelisted,
+      urlBlacklisted,
+      keywordMatches,
+      features,
+      recommendation: riskResult.recommendation,
+      riskScore: riskResult.riskScore,
+    };
+    let aiResult = null;
+    try {
+      const aiPromise = AIScanner.analyseUrl(aiInput);
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error("AI analysis timeout")), 15000);
+      });
+      aiResult = await Promise.race([aiPromise, timeoutPromise]);
+
+      const aiFindings = AIScanner.generateFindings(aiResult);
+
+      findings.push(...aiFindings);
+    } catch (error) {
+      console.error("AI URL analysis skipped:", error.message);
+    }
+
     /**store url scan result */
     const urlScan = await UrlScanModel.create({
       scan_id: scanId,
@@ -243,38 +274,10 @@ class UrlScanner {
       statistics: riskResult.statistics,
       api_response: {
         reputation: reputationResult,
+        ai: aiResult,
       },
     });
-    //ai
-    const aiInput = {
-      inputUrl,
-      normalizedUrl: normalisedUrl,
-      hostname: url.hostname,
-      protocol: url.protocol.replace(":", ""),
-      googleSafe: reputationResult.google.safe,
-      virustotalSafe: reputationResult.virustotal.safe,
-      domainBlacklisted,
-      domainWhitelisted,
-      urlBlacklisted,
-      keywordMatches,
-      features,
-      recommendation: riskResult.recommendation,
-      riskScore: riskResult.riskScore,
-    };
-    let aiResult = null;
-    try {
-      const aiPromise = AIScanner.analyseUrl(aiInput);
-      const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error("AI analysis timeout")));
-      });
-      aiResult = await Promise.race([aiPromise, timeoutPromise]);
 
-      const aiFindings = AIScanner.generateFindings(aiResult);
-
-      findings.push(...aiFindings);
-    } catch (error) {
-      console.error("AI URL analysis skipped:", error.message);
-    }
     // const aiResult = await AIScanner.analyseUrl(aiInput);
 
     // const aiFindings = AIScanner.generateFindings(aiResult);
@@ -312,6 +315,13 @@ class UrlScanner {
       isPhishing: riskResult.isPhishing,
       statistics: riskResult.statistics,
       features,
+      ai: aiResult
+        ? {
+            confidence: aiResult.confidence,
+            category: aiResult.category,
+            summary: aiResult.summary,
+          }
+        : null,
     };
   }
   /** Normailise URL
