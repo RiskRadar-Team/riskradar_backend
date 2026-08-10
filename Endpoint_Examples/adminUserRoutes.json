@@ -1,0 +1,162 @@
+{
+  "example":[
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/users/admin",
+        "method":"GET",
+        "credentials":"include",
+        "headers": {
+        "Authorization": "Bearer <accessToken>"
+        },
+        "body":{}
+      },
+      "response":{
+        "success": true,
+        "statusCode": 200,
+        "message": "Users retrieved successfully.",
+        "data": {
+            "users": [
+                {
+                    "id": "aa10864e-639a-4813-975e-eb283980d6b6",
+                    "fullName": "Test name",
+                    "email": "testuser@gmai.com",
+                    "role": "USER",
+                    "emailVerified": false,
+                    "isActive": true,
+                    "lastLogin": "2026-08-10T11:40:17.046Z",
+                    "createdAt": "2026-08-10T11:40:02.733Z",
+                    "updatedAt": "2026-08-10T11:40:17.046Z"
+                },
+                {
+                    "id": "a03bd2c3-b8ba-42dd-a41f-8dc52d8fe97e",
+                    "fullName": "Admin",
+                    "email": "admin@gmail.com",
+                    "role": "ADMIN",
+                    "emailVerified": false,
+                    "isActive": true,
+                    "lastLogin": null,
+                    "createdAt": "2026-07-19T12:58:59.420Z",
+                    "updatedAt": "2026-07-19T12:58:59.420Z"
+                },
+                {
+                    "id": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                    "fullName": "Super SD",
+                    "email": "supersd@gmail.com",
+                    "role": "ADMIN",
+                    "emailVerified": false,
+                    "isActive": true,
+                    "lastLogin": "2026-08-10T11:43:02.693Z",
+                    "createdAt": "2026-07-19T12:23:22.655Z",
+                    "updatedAt": "2026-08-10T11:43:02.693Z"
+                },
+                {
+                    "id": "5b47e79b-5579-4000-8beb-a11e734cf64e",
+                    "fullName": "User one updated",
+                    "email": "userone@gmail.com",
+                    "role": "USER",
+                    "emailVerified": false,
+                    "isActive": true,
+                    "lastLogin": "2026-07-19T13:06:52.183Z",
+                    "createdAt": "2026-07-18T12:03:37.150Z",
+                    "updatedAt": "2026-07-19T13:06:52.183Z"
+                }
+            ],
+            "pagination": {
+                "page": 1,
+                "limit": 10,
+                "total": 4,
+                "totalPages": 1,
+                "hasNextPage": false,
+                "hasPreviousPage": false
+            }
+        }
+    }
+    },
+    {
+      "complete search route":"http://localhost:5000/riskradar/users/admin?page=1&limit=10&search=super&role=admin",
+      "note":"All the params can be used seprately."
+    },
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/users/id/admin/status",
+        "method":"PATCH",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{
+          "isActive":false
+        }
+      },
+      "response":{
+          "success": true,
+          "statusCode": 200,
+          "message": "User status updated successfully.",
+          "data": {
+              "id": "5b47e79b-5579-4000-8beb-a11e734cf64e",
+              "fullName": "User one updated",
+              "email": "userone@gmail.com",
+              "role": "USER",
+              "emailVerified": false,
+              "isActive": false,
+              "lastLogin": "2026-07-19T13:06:52.183Z",
+              "createdAt": "2026-07-18T12:03:37.150Z",
+              "updatedAt": "2026-08-10T15:36:59.626Z"
+          }
+      }
+    },
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/users/id/admin/role",
+        "method":"PATCH",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{
+          "role":"ADMIN"
+        }
+      },
+      "response":{
+        "success": true,
+        "statusCode": 200,
+        "message": "User role updated successfully.",
+        "data": {
+            "id": "5b47e79b-5579-4000-8beb-a11e734cf64e",
+            "fullName": "User one updated",
+            "email": "userone@gmail.com",
+            "role": "USER",
+            "emailVerified": false,
+            "isActive": false,
+            "lastLogin": "2026-07-19T13:06:52.183Z",
+            "createdAt": "2026-07-18T12:03:37.150Z",
+            "updatedAt": "2026-08-10T15:38:07.512Z"
+        }
+    }
+    },
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/users/id/admin/",
+        "method":"DELETE",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{
+          "role":"ADMIN"
+        }
+      },
+      "response":{
+          "success": true,
+          "statusCode": 200,
+          "message": "User deleted successfully.",
+          "data": {
+              "id": "5b47e79b-5579-4000-8beb-a11e734cf64e",
+              "fullName": "User one updated",
+              "email": "userone@gmail.com",
+              "role": "USER"
+          }
+      }
+    }
+  ]
+}
