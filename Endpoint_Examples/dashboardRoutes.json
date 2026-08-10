@@ -1,0 +1,441 @@
+{
+  "example":[
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/dashboard",
+        "method":"GET",
+        "credentials":"include",
+        "headers": {
+        "Authorization": "Bearer <accessToken>"
+        },
+        "body":{}
+      },
+      "response":{
+          "success": true,
+          "statusCode": 200,
+          "message": "Dashboard data retrieved successfully.",
+          "data": {
+              "period": "30d",
+              "summary": {
+                  "totalScans": 25,
+                  "safeScans": 9,
+                  "threatsDetected": 16,
+                  "highCriticalThreats": 11,
+                  "averageRiskScore": 56.4,
+                  "securityScore": 41
+              },
+              "riskDistribution": [
+                  {
+                      "code": "SAFE",
+                      "displayName": "Safe",
+                      "color": "green",
+                      "count": 5
+                  },
+                  {
+                      "code": "LOW",
+                      "displayName": "Low Risk",
+                      "color": "blue",
+                      "count": 0
+                  },
+                  {
+                      "code": "MEDIUM",
+                      "displayName": "Medium Risk",
+                      "color": "yellow",
+                      "count": 9
+                  },
+                  {
+                      "code": "HIGH",
+                      "displayName": "High Risk",
+                      "color": "orange",
+                      "count": 6
+                  },
+                  {
+                      "code": "CRITICAL",
+                      "displayName": "Critical",
+                      "color": "red",
+                      "count": 5
+                  }
+              ],
+              "scanTypes": [
+                  {
+                      "type": "URL",
+                      "count": 11
+                  },
+                  {
+                      "type": "EMAIL",
+                      "count": 5
+                  },
+                  {
+                      "type": "MESSAGE",
+                      "count": 9
+                  }
+              ],
+              "threatCategories": [
+                  {
+                      "type": "OTHER",
+                      "count": 19
+                  },
+                  {
+                      "type": "DOMAIN",
+                      "count": 18
+                  },
+                  {
+                      "type": "AI",
+                      "count": 14
+                  },
+                  {
+                      "type": "URL",
+                      "count": 7
+                  },
+                  {
+                      "type": "REPUTATION",
+                      "count": 5
+                  }
+              ],
+              "threatTrend": [
+                  {
+                      "date": "2026-08-01",
+                      "totalScans": 1,
+                      "threatsDetected": 1,
+                      "safeScans": 0
+                  },
+                  {
+                      "date": "2026-08-04",
+                      "totalScans": 1,
+                      "threatsDetected": 0,
+                      "safeScans": 1
+                  },
+                  {
+                      "date": "2026-08-05",
+                      "totalScans": 4,
+                      "threatsDetected": 1,
+                      "safeScans": 3
+                  },
+                  {
+                      "date": "2026-08-07",
+                      "totalScans": 12,
+                      "threatsDetected": 10,
+                      "safeScans": 2
+                  },
+                  {
+                      "date": "2026-08-09",
+                      "totalScans": 5,
+                      "threatsDetected": 4,
+                      "safeScans": 1
+                  },
+                  {
+                      "date": "2026-08-10",
+                      "totalScans": 2,
+                      "threatsDetected": 0,
+                      "safeScans": 2
+                  }
+              ],
+              "recentScans": [
+                  {
+                      "id": "e25c139d-faa0-4131-819d-8ac7eb9c4f12",
+                      "type": "URL",
+                      "status": "COMPLETED",
+                      "input": "www.test.com/verify",
+                      "riskScore": 0,
+                      "isPhishing": false,
+                      "riskLevel": {
+                          "code": "SAFE",
+                          "displayName": "Safe",
+                          "color": "green"
+                      },
+                      "scanDurationMs": 7749,
+                      "createdAt": "2026-08-10T12:50:33.171Z",
+                      "completedAt": "2026-08-10T12:50:40.920Z"
+                  },
+                  {
+                      "id": "a3aea35c-85df-4e6b-bf8b-36f61f6e8e75",
+                      "type": "URL",
+                      "status": "COMPLETED",
+                      "input": "www.test.com/verify",
+                      "riskScore": 0,
+                      "isPhishing": false,
+                      "riskLevel": {
+                          "code": "SAFE",
+                          "displayName": "Safe",
+                          "color": "green"
+                      },
+                      "scanDurationMs": 6924,
+                      "createdAt": "2026-08-10T12:48:08.796Z",
+                      "completedAt": "2026-08-10T12:48:15.719Z"
+                  },
+                  {
+                      "id": "53cedcf3-a626-47ca-890b-1903a52761ac",
+                      "type": "URL",
+                      "status": "COMPLETED",
+                      "input": "https://paypal-login.xyz",
+                      "riskScore": 75,
+                      "isPhishing": true,
+                      "riskLevel": {
+                          "code": "HIGH",
+                          "displayName": "High Risk",
+                          "color": "orange"
+                      },
+                      "scanDurationMs": 16616,
+                      "createdAt": "2026-08-09T13:48:12.826Z",
+                      "completedAt": "2026-08-09T13:48:29.441Z"
+                  },
+                  {
+                      "id": "33844fe8-4b05-41d6-9e0e-61ff0473772a",
+                      "type": "URL",
+                      "status": "COMPLETED",
+                      "input": "https://paypal-login.xyz",
+                      "riskScore": 75,
+                      "isPhishing": true,
+                      "riskLevel": {
+                          "code": "HIGH",
+                          "displayName": "High Risk",
+                          "color": "orange"
+                      },
+                      "scanDurationMs": 1282,
+                      "createdAt": "2026-08-09T13:47:38.358Z",
+                      "completedAt": "2026-08-09T13:47:39.643Z"
+                  },
+                  {
+                      "id": "a3ad617b-9f96-4673-8f3b-e324a14ef7ac",
+                      "type": "URL",
+                      "status": "FAILED",
+                      "input": null,
+                      "riskScore": null,
+                      "isPhishing": null,
+                      "riskLevel": null,
+                      "scanDurationMs": null,
+                      "createdAt": "2026-08-09T13:46:31.704Z",
+                      "completedAt": null
+                  },
+                  {
+                      "id": "35369d04-ae31-4112-b590-83fb3afdc204",
+                      "type": "URL",
+                      "status": "COMPLETED",
+                      "input": "https://paypal-login.xyz",
+                      "riskScore": 75,
+                      "isPhishing": true,
+                      "riskLevel": {
+                          "code": "HIGH",
+                          "displayName": "High Risk",
+                          "color": "orange"
+                      },
+                      "scanDurationMs": 972,
+                      "createdAt": "2026-08-09T13:40:02.683Z",
+                      "completedAt": "2026-08-09T13:40:03.655Z"
+                  },
+                  {
+                      "id": "50b5a5fe-7784-4088-b49a-d08b80548a65",
+                      "type": "URL",
+                      "status": "COMPLETED",
+                      "input": "https://paypal-login.xyz",
+                      "riskScore": 75,
+                      "isPhishing": true,
+                      "riskLevel": {
+                          "code": "HIGH",
+                          "displayName": "High Risk",
+                          "color": "orange"
+                      },
+                      "scanDurationMs": 9409,
+                      "createdAt": "2026-08-09T13:28:36.140Z",
+                      "completedAt": "2026-08-09T13:28:45.549Z"
+                  },
+                  {
+                      "id": "21cef963-cd8e-4f11-a0eb-2699d8c832ea",
+                      "type": "EMAIL",
+                      "status": "COMPLETED",
+                      "input": "Urgent: Verify your account",
+                      "riskScore": 45,
+                      "isPhishing": false,
+                      "riskLevel": {
+                          "code": "MEDIUM",
+                          "displayName": "Medium Risk",
+                          "color": "yellow"
+                      },
+                      "scanDurationMs": 15199,
+                      "createdAt": "2026-08-09T13:22:38.519Z",
+                      "completedAt": "2026-08-09T13:22:53.718Z"
+                  },
+                  {
+                      "id": "c2495aa1-b56a-4d3b-b8a7-79fc6e4945ea",
+                      "type": "EMAIL",
+                      "status": "FAILED",
+                      "input": null,
+                      "riskScore": null,
+                      "isPhishing": null,
+                      "riskLevel": null,
+                      "scanDurationMs": null,
+                      "createdAt": "2026-08-09T13:21:15.410Z",
+                      "completedAt": null
+                  },
+                  {
+                      "id": "713bd2d4-f645-4820-8331-8872d053a36c",
+                      "type": "EMAIL",
+                      "status": "FAILED",
+                      "input": null,
+                      "riskScore": null,
+                      "isPhishing": null,
+                      "riskLevel": null,
+                      "scanDurationMs": null,
+                      "createdAt": "2026-08-09T13:18:34.380Z",
+                      "completedAt": null
+                  }
+              ],
+              "recentThreats": [
+                  {
+                      "id": "53cedcf3-a626-47ca-890b-1903a52761ac",
+                      "type": "URL",
+                      "input": "https://paypal-login.xyz",
+                      "riskScore": 75,
+                      "isPhishing": true,
+                      "riskLevel": {
+                          "code": "HIGH",
+                          "displayName": "High Risk",
+                          "color": "orange"
+                      },
+                      "createdAt": "2026-08-09T13:48:12.826Z",
+                      "completedAt": "2026-08-09T13:48:29.441Z"
+                  },
+                  {
+                      "id": "33844fe8-4b05-41d6-9e0e-61ff0473772a",
+                      "type": "URL",
+                      "input": "https://paypal-login.xyz",
+                      "riskScore": 75,
+                      "isPhishing": true,
+                      "riskLevel": {
+                          "code": "HIGH",
+                          "displayName": "High Risk",
+                          "color": "orange"
+                      },
+                      "createdAt": "2026-08-09T13:47:38.358Z",
+                      "completedAt": "2026-08-09T13:47:39.643Z"
+                  },
+                  {
+                      "id": "35369d04-ae31-4112-b590-83fb3afdc204",
+                      "type": "URL",
+                      "input": "https://paypal-login.xyz",
+                      "riskScore": 75,
+                      "isPhishing": true,
+                      "riskLevel": {
+                          "code": "HIGH",
+                          "displayName": "High Risk",
+                          "color": "orange"
+                      },
+                      "createdAt": "2026-08-09T13:40:02.683Z",
+                      "completedAt": "2026-08-09T13:40:03.655Z"
+                  },
+                  {
+                      "id": "50b5a5fe-7784-4088-b49a-d08b80548a65",
+                      "type": "URL",
+                      "input": "https://paypal-login.xyz",
+                      "riskScore": 75,
+                      "isPhishing": true,
+                      "riskLevel": {
+                          "code": "HIGH",
+                          "displayName": "High Risk",
+                          "color": "orange"
+                      },
+                      "createdAt": "2026-08-09T13:28:36.140Z",
+                      "completedAt": "2026-08-09T13:28:45.549Z"
+                  },
+                  {
+                      "id": "76acbd69-2f94-4555-8742-4ea6d1abae8f",
+                      "type": "MESSAGE",
+                      "input": "Your Paytm KYC has expired. Verify now at https://paytm-security.xyz to avoid account suspension.",
+                      "riskScore": 100,
+                      "isPhishing": true,
+                      "riskLevel": {
+                          "code": "CRITICAL",
+                          "displayName": "Critical",
+                          "color": "red"
+                      },
+                      "createdAt": "2026-08-07T15:39:33.783Z",
+                      "completedAt": "2026-08-07T15:39:41.548Z"
+                  },
+                  {
+                      "id": "d39f9357-e56b-406e-91de-17cf6dc0b12e",
+                      "type": "MESSAGE",
+                      "input": "Your Paytm KYC has expired. Verify now at https://paytm-security.xyz to avoid account suspension.",
+                      "riskScore": 100,
+                      "isPhishing": true,
+                      "riskLevel": {
+                          "code": "CRITICAL",
+                          "displayName": "Critical",
+                          "color": "red"
+                      },
+                      "createdAt": "2026-08-07T15:24:26.004Z",
+                      "completedAt": "2026-08-07T15:27:12.408Z"
+                  },
+                  {
+                      "id": "48b72fd4-477b-4e8d-aadd-e5f55276e084",
+                      "type": "MESSAGE",
+                      "input": "Your Paytm KYC has expired. Verify now at https://paytm-security.xyz to avoid account suspension.",
+                      "riskScore": 60,
+                      "isPhishing": true,
+                      "riskLevel": {
+                          "code": "MEDIUM",
+                          "displayName": "Medium Risk",
+                          "color": "yellow"
+                      },
+                      "createdAt": "2026-08-07T15:22:10.424Z",
+                      "completedAt": "2026-08-07T15:24:36.111Z"
+                  },
+                  {
+                      "id": "fb0e1bbc-d04d-4ef7-913c-7296be06439f",
+                      "type": "URL",
+                      "input": "https://paypal-login.xyz",
+                      "riskScore": 75,
+                      "isPhishing": true,
+                      "riskLevel": {
+                          "code": "HIGH",
+                          "displayName": "High Risk",
+                          "color": "orange"
+                      },
+                      "createdAt": "2026-08-07T14:13:39.915Z",
+                      "completedAt": "2026-08-07T14:14:00.248Z"
+                  },
+                  {
+                      "id": "ecdb1d34-198e-4205-a5b3-b16b766cfb32",
+                      "type": "EMAIL",
+                      "input": "Urgent: Verify your account",
+                      "riskScore": 100,
+                      "isPhishing": true,
+                      "riskLevel": {
+                          "code": "CRITICAL",
+                          "displayName": "Critical",
+                          "color": "red"
+                      },
+                      "createdAt": "2026-08-07T13:58:05.036Z",
+                      "completedAt": "2026-08-07T13:58:18.110Z"
+                  },
+                  {
+                      "id": "276278cb-b2a8-4dea-8658-9718c9c3b70b",
+                      "type": "MESSAGE",
+                      "input": "Your Paytm KYC has expired. Verify now at https://paytm-security.xyz to avoid account suspension.",
+                      "riskScore": 100,
+                      "isPhishing": true,
+                      "riskLevel": {
+                          "code": "CRITICAL",
+                          "displayName": "Critical",
+                          "color": "red"
+                      },
+                      "createdAt": "2026-08-07T13:33:00.060Z",
+                      "completedAt": "2026-08-07T13:33:35.629Z"
+                  }
+              ]
+          }
+      }
+    },
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/dashboard?period=7d",
+        "method":"GET",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{}
+      },
+        "response":"As the response get in riskradar/dashboard"
+    }
+  ]
+}

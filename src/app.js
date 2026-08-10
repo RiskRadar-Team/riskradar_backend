@@ -41,6 +41,7 @@ import scanRoutes from "./routes/scanRoutes.js";
 import scanFindingRoutes from "./routes/scanFindingRoutes.js";
 import emailScanRoutes from "./routes/emailScanRoutes.js";
 import messageScanRoutes from "./routes/messageScanRoutes.js";
+import dashboardRoutes from "./routes/dashboardRoutes.js";
 
 app.use("/riskradar/auth", authRoutes);
 app.use("/riskradar/user", userRoutes);
@@ -55,6 +56,7 @@ app.use("/riskradar/scan", scanRoutes);
 app.use("/riskradar/scan-findings", scanFindingRoutes);
 app.use("/riskradar/email-scan", emailScanRoutes);
 app.use("/riskradar/scan-message", messageScanRoutes);
+app.use("/riskradar/dashboard", dashboardRoutes);
 //end of routes
 
 app.use(errorHandler);
