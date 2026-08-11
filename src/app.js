@@ -44,6 +44,7 @@ import messageScanRoutes from "./routes/messageScanRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import adminUserRoutes from "./routes/adminUserRoutes.js";
 import adminDashboardRoutes from "./routes/adminDashboardRoutes.js";
+import historyRoutes from "./routes/historyRoutes.js";
 
 app.use("/riskradar/auth", authRoutes);
 app.use("/riskradar/user", userRoutes);
@@ -61,6 +62,7 @@ app.use("/riskradar/scan-message", messageScanRoutes);
 app.use("/riskradar/dashboard", dashboardRoutes);
 app.use("/riskradar/users", adminUserRoutes);
 app.use("/riskradar/admin/dashboard", adminDashboardRoutes);
+app.use("/riskradar/history", historyRoutes);
 //end of routes
 
 app.use(errorHandler);

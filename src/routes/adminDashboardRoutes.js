@@ -1,11 +1,11 @@
-import express from "express";
+import { Router } from "express";
 
 import AdminDashboardController from "../controllers/adminDashboardController.js";
 
 import authMiddleware from "../middlewares/authMiddleware.js";
 import authorize from "../middlewares/authorize.js";
 
-const router = express.Router();
+const router = Router();
 
 /*
  * All admin dashboard routes require:
