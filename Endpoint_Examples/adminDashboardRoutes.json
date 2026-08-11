@@ -1,0 +1,428 @@
+{
+  "example":[
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/admin/dashboard",
+        "method":"GET",
+        "credentials":"include",
+        "headers": {
+        "Authorization": "Bearer <accessToken>"
+        },
+        "body":{}
+      },
+      "response":{
+            "success": true,
+            "statusCode": 200,
+            "message": "Admin dashboard data retrieved successfully.",
+            "data": {
+                "period": "7d",
+                "summary": {
+                    "totalUsers": 2,
+                    "activeUsers": 2,
+                    "inactiveUsers": 0,
+                    "totalScans": 33,
+                    "scansToday": 4,
+                    "threatsDetected": 16,
+                    "safeScans": 13,
+                    "highCriticalScans": 12,
+                    "threatRate": 48.48,
+                    "averageRiskScore": 52.24
+                },
+                "riskDistribution": [
+                    {
+                        "code": "SAFE",
+                        "displayName": "Safe",
+                        "color": "green",
+                        "count": 8
+                    },
+                    {
+                        "code": "LOW",
+                        "displayName": "Low Risk",
+                        "color": "blue",
+                        "count": 0
+                    },
+                    {
+                        "code": "MEDIUM",
+                        "displayName": "Medium Risk",
+                        "color": "yellow",
+                        "count": 9
+                    },
+                    {
+                        "code": "HIGH",
+                        "displayName": "High Risk",
+                        "color": "orange",
+                        "count": 6
+                    },
+                    {
+                        "code": "CRITICAL",
+                        "displayName": "Critical",
+                        "color": "red",
+                        "count": 6
+                    }
+                ],
+                "scanTypes": [
+                    {
+                        "type": "URL",
+                        "count": 14
+                    },
+                    {
+                        "type": "MESSAGE",
+                        "count": 10
+                    },
+                    {
+                        "type": "EMAIL",
+                        "count": 9
+                    }
+                ],
+                "threatCategories": [
+                    {
+                        "type": "OTHER",
+                        "count": 31,
+                        "totalScore": 705
+                    },
+                    {
+                        "type": "AI",
+                        "count": 24,
+                        "totalScore": 1559
+                    },
+                    {
+                        "type": "URL",
+                        "count": 10,
+                        "totalScore": 130
+                    },
+                    {
+                        "type": "DOMAIN",
+                        "count": 6,
+                        "totalScore": 125
+                    },
+                    {
+                        "type": "REPUTATION",
+                        "count": 5,
+                        "totalScore": 300
+                    }
+                ],
+                "threatTrend": [
+                    {
+                        "date": "2026-08-04",
+                        "totalScans": 1,
+                        "threatsDetected": 0,
+                        "safeScans": 1,
+                        "averageRiskScore": 0
+                    },
+                    {
+                        "date": "2026-08-05",
+                        "totalScans": 5,
+                        "threatsDetected": 1,
+                        "safeScans": 3,
+                        "averageRiskScore": 35
+                    },
+                    {
+                        "date": "2026-08-07",
+                        "totalScans": 12,
+                        "threatsDetected": 10,
+                        "safeScans": 2,
+                        "averageRiskScore": 72.92
+                    },
+                    {
+                        "date": "2026-08-09",
+                        "totalScans": 8,
+                        "threatsDetected": 4,
+                        "safeScans": 1,
+                        "averageRiskScore": 69
+                    },
+                    {
+                        "date": "2026-08-10",
+                        "totalScans": 3,
+                        "threatsDetected": 0,
+                        "safeScans": 3,
+                        "averageRiskScore": 1.67
+                    },
+                    {
+                        "date": "2026-08-11",
+                        "totalScans": 4,
+                        "threatsDetected": 1,
+                        "safeScans": 3,
+                        "averageRiskScore": 37.5
+                    }
+                ],
+                "topUsers": [
+                    {
+                        "id": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                        "fullName": "Super SD",
+                        "email": "supersd@gmail.com",
+                        "totalScans": 28,
+                        "threatsDetected": 15,
+                        "averageRiskScore": 56.67,
+                        "lastScanAt": "2026-08-10T12:50:33.171Z"
+                    },
+                    {
+                        "id": "aa10864e-639a-4813-975e-eb283980d6b6",
+                        "fullName": "Test name",
+                        "email": "testuser@gmai.com",
+                        "totalScans": 5,
+                        "threatsDetected": 1,
+                        "averageRiskScore": 31,
+                        "lastScanAt": "2026-08-11T15:23:25.878Z"
+                    }
+                ],
+                "recentUsers": [
+                    {
+                        "id": "aa10864e-639a-4813-975e-eb283980d6b6",
+                        "fullName": "Test name",
+                        "email": "testuser@gmai.com",
+                        "role": "USER",
+                        "isActive": true,
+                        "emailVerified": false,
+                        "lastLogin": "2026-08-11T15:23:03.132Z",
+                        "createdAt": "2026-08-10T11:40:02.733Z"
+                    },
+                    {
+                        "id": "a03bd2c3-b8ba-42dd-a41f-8dc52d8fe97e",
+                        "fullName": "Admin",
+                        "email": "admin@gmail.com",
+                        "role": "ADMIN",
+                        "isActive": true,
+                        "emailVerified": false,
+                        "lastLogin": null,
+                        "createdAt": "2026-07-19T12:58:59.420Z"
+                    },
+                    {
+                        "id": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                        "fullName": "Super SD",
+                        "email": "supersd@gmail.com",
+                        "role": "ADMIN",
+                        "isActive": true,
+                        "emailVerified": false,
+                        "lastLogin": "2026-08-11T14:05:39.806Z",
+                        "createdAt": "2026-07-19T12:23:22.655Z"
+                    }
+                ],
+                "recentThreats": [
+                    {
+                        "id": "127e8a48-f879-4430-974f-889abf06f92c",
+                        "userId": "aa10864e-639a-4813-975e-eb283980d6b6",
+                        "user": {
+                            "fullName": "Test name",
+                            "email": "testuser@gmai.com"
+                        },
+                        "scanType": "MESSAGE",
+                        "status": "COMPLETED",
+                        "input": "Your Paytm KYC has expired. Verify now at https://paytm-security.xyz to avoid account suspension.",
+                        "riskScore": 100,
+                        "isPhishing": true,
+                        "riskLevel": {
+                            "code": "CRITICAL",
+                            "displayName": "Critical",
+                            "color": "red"
+                        },
+                        "createdAt": "2026-08-11T14:00:04.912Z",
+                        "completedAt": "2026-08-11T14:00:13.463Z"
+                    },
+                    {
+                        "id": "53cedcf3-a626-47ca-890b-1903a52761ac",
+                        "userId": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                        "user": {
+                            "fullName": "Super SD",
+                            "email": "supersd@gmail.com"
+                        },
+                        "scanType": "URL",
+                        "status": "COMPLETED",
+                        "input": "https://paypal-login.xyz",
+                        "riskScore": 75,
+                        "isPhishing": true,
+                        "riskLevel": {
+                            "code": "HIGH",
+                            "displayName": "High Risk",
+                            "color": "orange"
+                        },
+                        "createdAt": "2026-08-09T13:48:12.826Z",
+                        "completedAt": "2026-08-09T13:48:29.441Z"
+                    },
+                    {
+                        "id": "33844fe8-4b05-41d6-9e0e-61ff0473772a",
+                        "userId": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                        "user": {
+                            "fullName": "Super SD",
+                            "email": "supersd@gmail.com"
+                        },
+                        "scanType": "URL",
+                        "status": "COMPLETED",
+                        "input": "https://paypal-login.xyz",
+                        "riskScore": 75,
+                        "isPhishing": true,
+                        "riskLevel": {
+                            "code": "HIGH",
+                            "displayName": "High Risk",
+                            "color": "orange"
+                        },
+                        "createdAt": "2026-08-09T13:47:38.358Z",
+                        "completedAt": "2026-08-09T13:47:39.643Z"
+                    },
+                    {
+                        "id": "35369d04-ae31-4112-b590-83fb3afdc204",
+                        "userId": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                        "user": {
+                            "fullName": "Super SD",
+                            "email": "supersd@gmail.com"
+                        },
+                        "scanType": "URL",
+                        "status": "COMPLETED",
+                        "input": "https://paypal-login.xyz",
+                        "riskScore": 75,
+                        "isPhishing": true,
+                        "riskLevel": {
+                            "code": "HIGH",
+                            "displayName": "High Risk",
+                            "color": "orange"
+                        },
+                        "createdAt": "2026-08-09T13:40:02.683Z",
+                        "completedAt": "2026-08-09T13:40:03.655Z"
+                    },
+                    {
+                        "id": "50b5a5fe-7784-4088-b49a-d08b80548a65",
+                        "userId": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                        "user": {
+                            "fullName": "Super SD",
+                            "email": "supersd@gmail.com"
+                        },
+                        "scanType": "URL",
+                        "status": "COMPLETED",
+                        "input": "https://paypal-login.xyz",
+                        "riskScore": 75,
+                        "isPhishing": true,
+                        "riskLevel": {
+                            "code": "HIGH",
+                            "displayName": "High Risk",
+                            "color": "orange"
+                        },
+                        "createdAt": "2026-08-09T13:28:36.140Z",
+                        "completedAt": "2026-08-09T13:28:45.549Z"
+                    },
+                    {
+                        "id": "76acbd69-2f94-4555-8742-4ea6d1abae8f",
+                        "userId": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                        "user": {
+                            "fullName": "Super SD",
+                            "email": "supersd@gmail.com"
+                        },
+                        "scanType": "MESSAGE",
+                        "status": "COMPLETED",
+                        "input": "Your Paytm KYC has expired. Verify now at https://paytm-security.xyz to avoid account suspension.",
+                        "riskScore": 100,
+                        "isPhishing": true,
+                        "riskLevel": {
+                            "code": "CRITICAL",
+                            "displayName": "Critical",
+                            "color": "red"
+                        },
+                        "createdAt": "2026-08-07T15:39:33.783Z",
+                        "completedAt": "2026-08-07T15:39:41.548Z"
+                    },
+                    {
+                        "id": "d39f9357-e56b-406e-91de-17cf6dc0b12e",
+                        "userId": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                        "user": {
+                            "fullName": "Super SD",
+                            "email": "supersd@gmail.com"
+                        },
+                        "scanType": "MESSAGE",
+                        "status": "COMPLETED",
+                        "input": "Your Paytm KYC has expired. Verify now at https://paytm-security.xyz to avoid account suspension.",
+                        "riskScore": 100,
+                        "isPhishing": true,
+                        "riskLevel": {
+                            "code": "CRITICAL",
+                            "displayName": "Critical",
+                            "color": "red"
+                        },
+                        "createdAt": "2026-08-07T15:24:26.004Z",
+                        "completedAt": "2026-08-07T15:27:12.408Z"
+                    },
+                    {
+                        "id": "48b72fd4-477b-4e8d-aadd-e5f55276e084",
+                        "userId": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                        "user": {
+                            "fullName": "Super SD",
+                            "email": "supersd@gmail.com"
+                        },
+                        "scanType": "MESSAGE",
+                        "status": "COMPLETED",
+                        "input": "Your Paytm KYC has expired. Verify now at https://paytm-security.xyz to avoid account suspension.",
+                        "riskScore": 60,
+                        "isPhishing": true,
+                        "riskLevel": {
+                            "code": "MEDIUM",
+                            "displayName": "Medium Risk",
+                            "color": "yellow"
+                        },
+                        "createdAt": "2026-08-07T15:22:10.424Z",
+                        "completedAt": "2026-08-07T15:24:36.111Z"
+                    },
+                    {
+                        "id": "fb0e1bbc-d04d-4ef7-913c-7296be06439f",
+                        "userId": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                        "user": {
+                            "fullName": "Super SD",
+                            "email": "supersd@gmail.com"
+                        },
+                        "scanType": "URL",
+                        "status": "COMPLETED",
+                        "input": "https://paypal-login.xyz",
+                        "riskScore": 75,
+                        "isPhishing": true,
+                        "riskLevel": {
+                            "code": "HIGH",
+                            "displayName": "High Risk",
+                            "color": "orange"
+                        },
+                        "createdAt": "2026-08-07T14:13:39.915Z",
+                        "completedAt": "2026-08-07T14:14:00.248Z"
+                    },
+                    {
+                        "id": "ecdb1d34-198e-4205-a5b3-b16b766cfb32",
+                        "userId": "edc95952-6b5c-4727-9a96-1c41b784d1ea",
+                        "user": {
+                            "fullName": "Super user",
+                            "email": "superuser@gmail.com"
+                        },
+                        "scanType": "EMAIL",
+                        "status": "COMPLETED",
+                        "input": "Urgent: Verify your account",
+                        "riskScore": 100,
+                        "isPhishing": true,
+                        "riskLevel": {
+                            "code": "CRITICAL",
+                            "displayName": "Critical",
+                            "color": "red"
+                        },
+                        "createdAt": "2026-08-07T13:58:05.036Z",
+                        "completedAt": "2026-08-07T13:58:18.110Z"
+                    }
+                ],
+                "aiAnalysis": {
+                    "analyzedScans": 13,
+                    "findings": 24,
+                    "highRiskFindings": 16,
+                    "averageScore": 64.96
+                }
+            }
+        }
+    },
+    {
+      "request":{
+        "url":"http://localhost:5000/riskradar/admin/dashboard?period=7d",
+        "method":"GET",
+        "credentials":"include",
+        "headers":{
+          "Authorization":"Bearer <accessToken>"
+        },
+        "body":{}
+      },
+        "response":"As the response get in riskradar/admin/dashboard"
+    },
+    {
+        "note:period can be":["7d,30d,90d,all"]
+    }
+
+  ]
+}
