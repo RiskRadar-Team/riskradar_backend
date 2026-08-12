@@ -1,7 +1,10 @@
 import { Router } from "express";
 import {
+  forgotPasswordValidation,
   loginValidation,
   registerValidation,
+  resetPasswordValidation,
+  verifyResetOtpValidation,
 } from "../validations/authValidation.js";
 import validateRequest from "../middlewares/validateRequest.js";
 import UserAuthController from "../controllers/userAuthController.js";
@@ -32,5 +35,27 @@ router.post("/refresh-token", UserAuthController.refreshToken);
 router.post("/logout", authMiddleware, UserAuthController.logout);
 // logout From All Devices
 router.post("/logout-all", authMiddleware, UserAuthController.logoutAll);
+//forgot password releated routes
+
+router.post(
+  "/forgot-password",
+  forgotPasswordValidation,
+  validateRequest,
+  UserAuthController.forgotPassword,
+);
+
+router.post(
+  "/verify-reset-otp",
+  verifyResetOtpValidation,
+  validateRequest,
+  UserAuthController.verifyResetOtp,
+);
+
+router.post(
+  "/reset-password",
+  resetPasswordValidation,
+  validateRequest,
+  UserAuthController.resetPassword,
+);
 
 export default router;

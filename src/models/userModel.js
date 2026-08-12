@@ -131,6 +131,24 @@ class UserModel {
       throw error;
     }
   }
+  static async updatePassword(userId, passwordHash) {
+    try {
+      const query = `
+    UPDATE users
+    SET
+      password = $1,
+      updated_at = CURRENT_TIMESTAMP
+    WHERE id = $2
+    RETURNING id, email, updated_at
+  `;
+
+      const { rows } = await dbPool.query(query, [passwordHash, userId]);
+
+      return rows[0] || null;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default UserModel;

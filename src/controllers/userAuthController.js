@@ -66,5 +66,59 @@ class UserAuthController {
       .status(200)
       .json(new ApiResponse(200, "Logged out from all devices successfully."));
   });
+  /**
+   * Request password reset OTP.
+   */
+  static forgotPassword = catchAsync(async (request, response) => {
+    const { email } = request.body;
+
+    await AuthService.forgotPassword(email);
+
+    /*
+     * Always return the same response whether the email
+     * exists or not. This prevents email enumeration.
+     */
+    return response
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          "If an account exists with this email, a password reset OTP has been sent.",
+          null,
+        ),
+      );
+  });
+
+  /**
+   * Verify password reset OTP.
+   */
+  static verifyResetOtp = catchAsync(async (request, response) => {
+    const { email, otp } = request.body;
+
+    const result = await AuthService.verifyResetOtp(email, otp);
+
+    return response
+      .status(200)
+      .json(new ApiResponse(200, "OTP verified successfully.", result));
+  });
+
+  /**
+   * Reset password.
+   */
+  static resetPassword = catchAsync(async (request, response) => {
+    const { resetToken, password } = request.body;
+
+    await AuthService.resetPassword(resetToken, password);
+
+    return response
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          "Password reset successful. You can now login with your new password.",
+          null,
+        ),
+      );
+  });
 }
 export default UserAuthController;

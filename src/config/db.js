@@ -43,6 +43,32 @@ export async function initialiseDatabaseTable() {
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `);
+  await dbPool.query(`
+    CREATE TABLE IF NOT EXISTS password_reset_otps (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+        user_id UUID NOT NULL
+            REFERENCES users(id)
+            ON DELETE CASCADE,
+
+        otp_hash VARCHAR(64) NOT NULL,
+
+        expires_at TIMESTAMP NOT NULL,
+
+        attempts SMALLINT NOT NULL DEFAULT 0
+            CHECK (attempts >= 0),
+
+        verified_at TIMESTAMP,
+
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_password_reset_otps_user_id
+        ON password_reset_otps(user_id);
+
+    CREATE INDEX IF NOT EXISTS idx_password_reset_otps_expires_at
+        ON password_reset_otps(expires_at);
+    `);
   /**threat types table */
   await dbPool.query(`
     CREATE TABLE IF NOT EXISTS threat_types (
