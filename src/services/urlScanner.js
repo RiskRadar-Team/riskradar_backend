@@ -191,12 +191,16 @@ class UrlScanner {
       });
     }
     this.generateKeywordFindings(keywordMatches, findings);
+    // /*
+    //  * Calculate score from findings.
+    //  */
+    // // const riskScore = this.calculateRiskScore(findings);
+    // const riskResult = await RiskScoreService.calculate(findings);
+    //ai
     /*
      * Calculate score from findings.
      */
-    // const riskScore = this.calculateRiskScore(findings);
-    const riskResult = await RiskScoreService.calculate(findings);
-    //ai
+    // const riskResult = await RiskScoreService.calculate(findings);
     const aiInput = {
       inputUrl,
       normalizedUrl: normalisedUrl,
@@ -209,8 +213,8 @@ class UrlScanner {
       urlBlacklisted,
       keywordMatches,
       features,
-      recommendation: riskResult.recommendation,
-      riskScore: riskResult.riskScore,
+      // recommendation: riskResult.recommendation,
+      // riskScore: riskResult.riskScore,
     };
     let aiResult = null;
     try {
@@ -227,6 +231,69 @@ class UrlScanner {
       console.error("AI URL analysis skipped:", error.message);
     }
 
+    // /**store url scan result */
+    // const urlScan = await UrlScanModel.create({
+    //   scan_id: scanId,
+    //   input_url: inputUrl,
+    //   normalized_url: normalisedUrl,
+    //   final_url: null,
+    //   domain_name: url.hostname,
+    //   protocol: url.protocol.replace(":", ""),
+    //   uses_https: features.usesHttps,
+    //   url_length: normalisedUrl.length,
+    //   hostname_length: features.hostnameLength,
+    //   path_length: features.pathLength,
+    //   query_length: features.queryLength,
+    //   subdomain_count: features.subdomainCount,
+    //   contains_ip: features.containsIp,
+    //   contains_shortener: features.containsShortener,
+    //   contains_at_symbol: features.containsAtSymbol,
+    //   contains_hex_encoding: features.containsHexEncoding,
+    //   contains_punycode: features.containsPunycode,
+    //   contains_suspicious_tld: features.containsSuspiciousTld,
+    //   has_non_standard_port: features.hasNonStandardPort,
+    //   domain_blacklisted: domainBlacklisted,
+    //   url_blacklisted: urlBlacklisted,
+    //   // reputation_score: this.calculateReputationScore({
+    //   //   urlBlacklisted,
+    //   //   domainBlacklisted,
+    //   //   domainWhitelisted,
+    //   //   domainRecord,
+    //   //   urlRecord,
+    //   // }),
+    //   reputation_score: reputationResult.reputationScore,
+    //   google_safe: reputationResult.google.safe,
+
+    //   virustotal_safe: reputationResult.virustotal.safe,
+    //   // recommendation: this.getRecommendation({
+    //   //   riskScore,
+    //   //   urlBlacklisted,
+    //   //   domainBlacklisted,
+    //   //   domainWhitelisted,
+    //   // }),
+    //   recommendation: riskResult.recommendation,
+    //   risk_score: riskResult.riskScore,
+    //   risk_level: riskResult.riskLevel,
+    //   is_phishing: riskResult.isPhishing,
+    //   statistics: riskResult.statistics,
+    //   api_response: {
+    //     reputation: reputationResult,
+    //     ai: aiResult,
+    //   },
+    // });
+
+    // const aiResult = await AIScanner.analyseUrl(aiInput);
+
+    // const aiFindings = AIScanner.generateFindings(aiResult);
+
+    // findings.push(...aiFindings);
+    /*
+     * Insert findings into scan_findings.
+     *
+     * We intentionally do this after url_scans
+     * succeeds so that we have a valid scan result.
+     */
+    const riskResult = await RiskScoreService.calculate(findings);
     /**store url scan result */
     const urlScan = await UrlScanModel.create({
       scan_id: scanId,
@@ -277,18 +344,6 @@ class UrlScanner {
         ai: aiResult,
       },
     });
-
-    // const aiResult = await AIScanner.analyseUrl(aiInput);
-
-    // const aiFindings = AIScanner.generateFindings(aiResult);
-
-    // findings.push(...aiFindings);
-    /*
-     * Insert findings into scan_findings.
-     *
-     * We intentionally do this after url_scans
-     * succeeds so that we have a valid scan result.
-     */
     const createdFindings = [];
 
     for (const finding of findings) {
