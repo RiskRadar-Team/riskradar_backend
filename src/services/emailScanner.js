@@ -176,7 +176,7 @@ class EmailScanner {
 
       dmarcResult: dmarc_result,
     });
-
+    const findings = [];
     const aiInput = {
       sender_email,
       senderDomain,
@@ -213,7 +213,7 @@ class EmailScanner {
     /*
      * Generate findings.
      */
-    const findings = [];
+
     // findings.push(...aiFindings);
     /*
      * Sender/domain findings.
