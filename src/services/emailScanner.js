@@ -373,7 +373,7 @@ class EmailScanner {
     }
 
     /*
-     * Calculate final risk.
+     * Calculate final risk score.
      */
     const riskResult = await RiskScoreService.calculate(findings);
 
