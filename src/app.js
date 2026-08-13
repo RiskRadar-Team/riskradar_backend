@@ -10,6 +10,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
   "https://riskradar-b6ne97etr-sahitya28s-projects.vercel.app",
+  "https://riskradar-beta.vercel.app",
 ];
 
 app.use(
