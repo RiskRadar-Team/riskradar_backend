@@ -23,6 +23,7 @@
     "jsonwebtoken": "^9.0.3",
     "nodemailer": "^9.0.5",
     "pg": "^8.22.0",
+    "resend": "^6.20.0",
     "url-parse": "^1.5.10"
   },
   "devDependencies": {
