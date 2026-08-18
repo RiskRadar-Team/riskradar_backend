@@ -397,11 +397,11 @@ class MessageScanner {
         phoneNumbers,
       },
       ai: {
-        confidence: aiResult.confidence,
+        confidence: aiResult?.confidence,
 
-        category: aiResult.category,
+        category: aiResult?.category,
 
-        summary: aiResult.summary,
+        summary: aiResult?.summary,
       },
     };
   }
